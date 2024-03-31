@@ -55,11 +55,12 @@ export const LoginForm = () => {
 
                 if (res.success) {
                     setSuccess(res.success);
+
+                    setTimeout(() => {
+                        router.push("/");
+                    }, 1000);
                 }
 
-                setTimeout(() => {
-                    router.push("/");
-                }, 1000);
             });
         });
     };

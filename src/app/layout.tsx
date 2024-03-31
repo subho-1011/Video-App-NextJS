@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
+import { SessionProvider } from "next-auth/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,24 +18,26 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
-            <body
-                className={cn(
-                    "h-full flex items-center justify-center",
-                    inter.className
-                )}
-            >
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="system"
-                    enableSystem
-                    disableTransitionOnChange
+        <SessionProvider>
+            <html lang="en">
+                <body
+                    className={cn(
+                        "h-full flex items-center justify-center",
+                        inter.className
+                    )}
                 >
-                    {children}
-                    {/* <div className="min-h-screen flex items-center justify-center">
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="system"
+                        enableSystem
+                        disableTransitionOnChange
+                    >
+                        {children}
+                        {/* <div className="min-h-screen flex items-center justify-center">
                     </div> */}
-                </ThemeProvider>
-            </body>
-        </html>
+                    </ThemeProvider>
+                </body>
+            </html>
+        </SessionProvider>
     );
 }
