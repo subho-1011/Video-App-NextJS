@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { LoginFormSchema } from "@/types/schemas";
+import { LoginFormSchema } from "@/lib/schemas";
 
 import { useState, useTransition } from "react";
 
@@ -18,10 +18,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 
+import { login } from "@/services/auth.services";
+
+import { useRouter } from "next/navigation";
+
 export const LoginForm = () => {
+    const router = useRouter();
+
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
     const [isPending, startTransition] = useTransition();
@@ -35,7 +42,26 @@ export const LoginForm = () => {
     });
 
     const onSubmit = (data: z.infer<typeof LoginFormSchema>) => {
-        console.log(data);
+        setError("");
+        setSuccess("");
+
+        startTransition(() => {
+            login(data).then((res) => {
+                console.log(res);
+                router.prefetch("/");
+                if (res.error) {
+                    setError(res.error);
+                }
+
+                if (res.success) {
+                    setSuccess(res.success);
+                }
+
+                setTimeout(() => {
+                    router.push("/");
+                }, 1000);
+            });
+        });
     };
 
     return (
@@ -62,6 +88,7 @@ export const LoginForm = () => {
                                             {...field}
                                             placeholder="mr.chandragupta@gmail.com"
                                             type="email"
+                                            disabled={isPending}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -79,6 +106,7 @@ export const LoginForm = () => {
                                             {...field}
                                             placeholder="********"
                                             type="password"
+                                            disabled={isPending}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -86,9 +114,14 @@ export const LoginForm = () => {
                             )}
                         />
                         <FormError message={error} />
-                        <FormSuccess message={error} />
+                        <FormSuccess message={success} />
                     </div>
-                    <Button className="w-full" size="lg" type="submit">
+                    <Button
+                        className="w-full"
+                        size="lg"
+                        type="submit"
+                        disabled={isPending}
+                    >
                         Sign In
                     </Button>
                 </form>

@@ -1,5 +1,3 @@
-"use client";
-
 import * as z from "zod";
 
 export const LoginFormSchema = z.object({
@@ -11,10 +9,10 @@ export const LoginFormSchema = z.object({
 
 export const RegisterFormShema = z.object({
     email: z.string().email().toLowerCase().trim(),
-    fullname: z
+    name: z
         .string()
         .min(1, {
-            message: "Fullname is required",
+            message: "name is required",
         })
         .trim(),
     username: z

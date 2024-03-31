@@ -3,11 +3,11 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { RegisterFormShema } from "@/types/schemas";
+import { RegisterFormShema } from "@/lib/schemas";
 
 import { useState, useTransition } from "react";
 
-import { CardWrapper } from "./auth-card-wrapper";
+import { CardWrapper } from "@/components/auth/auth-card-wrapper";
 import {
     Form,
     FormControl,
@@ -20,16 +20,17 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
+import { register } from "@/services/auth.services";
 
 export const RegisterForm = () => {
-    const [error, setError] = useState<string | undefined>("");
-    const [success, setSuccess] = useState<string | undefined>("");
+    const [error, setError] = useState<string>("");
+    const [success, setSuccess] = useState<string>("");
     const [isPending, startTransition] = useTransition();
 
     const form = useForm<z.infer<typeof RegisterFormShema>>({
         resolver: zodResolver(RegisterFormShema),
         defaultValues: {
-            fullname: "",
+            name: "",
             username: "",
             email: "",
             password: "",
@@ -37,7 +38,20 @@ export const RegisterForm = () => {
     });
 
     const onSubmit = (data: z.infer<typeof RegisterFormShema>) => {
-        console.log(data);
+        setError("");
+        setSuccess("");
+
+        startTransition(() => {
+            register(data).then((res) => {
+                if (res.error) {
+                    setError(res.error);
+                }
+
+                if (res.success) {
+                    setSuccess(res.success);
+                }
+            });
+        });
     };
 
     return (
@@ -55,7 +69,7 @@ export const RegisterForm = () => {
                     <div className="space-y-4">
                         <FormField
                             control={form.control}
-                            name="fullname"
+                            name="name"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Full Name</FormLabel>
@@ -63,6 +77,7 @@ export const RegisterForm = () => {
                                         <Input
                                             {...field}
                                             placeholder="Mr chandra gupta"
+                                            disabled={isPending}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -79,6 +94,7 @@ export const RegisterForm = () => {
                                         <Input
                                             {...field}
                                             placeholder="gupta123"
+                                            disabled={isPending}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -96,6 +112,7 @@ export const RegisterForm = () => {
                                             {...field}
                                             placeholder="mr.chandragupta@gmail.com"
                                             type="email"
+                                            disabled={isPending}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -113,6 +130,7 @@ export const RegisterForm = () => {
                                             {...field}
                                             placeholder="********"
                                             type="password"
+                                            disabled={isPending}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -120,9 +138,14 @@ export const RegisterForm = () => {
                             )}
                         />
                         <FormError message={error} />
-                        <FormSuccess message={error} />
+                        <FormSuccess message={success} />
                     </div>
-                    <Button className="w-full" size="lg" type="submit">
+                    <Button
+                        className="w-full"
+                        size="lg"
+                        type="submit"
+                        disabled={isPending}
+                    >
                         Sign Up
                     </Button>
                 </form>
