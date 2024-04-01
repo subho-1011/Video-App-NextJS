@@ -12,12 +12,19 @@ import {
 
 import { LogoutButton } from "@/components/auth/logout-button";
 
-import { ExitIcon } from "@radix-ui/react-icons";
-import { useSession } from "next-auth/react";
+import { LoginButton } from "@/components/auth/login-button";
+import { useCurrentUser } from "@/lib/hooks";
+import { useRouter } from "next/navigation";
 
 export const UserButton = () => {
-    const session = useSession();
-    const user = session.data?.user;
+    const router = useRouter();
+    const user = useCurrentUser();
+
+    const fallback = user?.name
+        ?.split(" ")
+        .slice(0, 2)
+        .map((word) => word.charAt(0).toUpperCase())
+        .join("");
 
     return (
         <DropdownMenu>
@@ -25,17 +32,33 @@ export const UserButton = () => {
                 <Avatar>
                     <AvatarImage src={user?.image || ""} />
                     <AvatarFallback className="">
-                        <FaUser className=" text-white" />
+                        {fallback ? (
+                            fallback
+                        ) : (
+                            <FaUser className=" text-white" />
+                        )}
                     </AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <LogoutButton>
-                    <DropdownMenuItem className="cursor-pointer">
-                        <ExitIcon className=" h-4 w-4 mr-2" />
-                        Logout
-                    </DropdownMenuItem>
-                </LogoutButton>
+                {!user ? (
+                    <LoginButton>
+                        <DropdownMenuItem>Login</DropdownMenuItem>
+                    </LoginButton>
+                ) : (
+                    <>
+                        <DropdownMenuItem
+                            onClick={() => router.push("/profile")}
+                        >
+                            Profile
+                        </DropdownMenuItem>
+                        <LogoutButton>
+                            <DropdownMenuItem className="cursor-pointer">
+                                Logout
+                            </DropdownMenuItem>
+                        </LogoutButton>
+                    </>
+                )}
             </DropdownMenuContent>
         </DropdownMenu>
     );
