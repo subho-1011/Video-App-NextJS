@@ -40,7 +40,7 @@ export default function RootLayout({
                         <Header />
                         <div className="w-full flex flex-1 justify-between">
                             <Sider />
-                            <main className="w-full">{children}</main>
+                            <main className="w-full p-8">{children}</main>
                         </div>
                     </ThemeProvider>
                 </body>

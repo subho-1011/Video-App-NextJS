@@ -13,18 +13,14 @@ import {
 import { LogoutButton } from "@/components/auth/logout-button";
 
 import { LoginButton } from "@/components/auth/login-button";
-import { useCurrentUser } from "@/lib/hooks";
+import { useAvatarFallback, useCurrentUser } from "@/hooks/user";
 import { useRouter } from "next/navigation";
 
 export const UserButton = () => {
     const router = useRouter();
     const user = useCurrentUser();
 
-    const fallback = user?.name
-        ?.split(" ")
-        .slice(0, 2)
-        .map((word) => word.charAt(0).toUpperCase())
-        .join("");
+    const fallback = useAvatarFallback();
 
     return (
         <DropdownMenu>
