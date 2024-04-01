@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -16,6 +15,7 @@ import {
     ThumbsUpIcon,
     User2Icon,
 } from "lucide-react";
+import { LogoutButton } from "@/components/auth/logout-button";
 
 const navItems = [
     {
@@ -57,7 +57,7 @@ const navItems = [
 
 const Sider = () => {
     const pathname = usePathname();
-    const [isOpen, setIsOpen] = useState<boolean>();
+    const [isOpen, setIsOpen] = useState<boolean>(true);
 
     useEffect(() => {
         window.addEventListener("resize", () => {
@@ -71,40 +71,39 @@ const Sider = () => {
         });
     }, [pathname]);
 
-    const onClick = () => {
-        setIsOpen(!isOpen);
-    };
-
     return (
         <aside className="min-h-screen border-r hidden sm:flex">
             <div className="flex flex-col w-full h-fit p-3 items-start space-y-2">
-                <Button variant="ghost" className="" onClick={onClick}>
+                <Button
+                    variant="ghost"
+                    className=""
+                    onClick={() => setIsOpen(!isOpen)}
+                >
                     <MenuIcon />
                 </Button>
                 {navItems.map((item) => (
                     <Button
                         variant={pathname === item.href ? "navActive" : "ghost"}
                         key={item.label}
+                        className="w-full"
+                        onClick={() => (window.location.href = item.href)}
                     >
-                        <div className="w-full">
-                            <Link
-                                href={item.href}
-                                className="flex w-full gap-2 font-normal left-0 items-center"
-                            >
-                                <item.Icon className="h-4 w-4" />
-                                {isOpen && item.label}
-                            </Link>
+                        <div className="flex w-full gap-2 font-normal left-0 items-center">
+                            <item.Icon className="h-4 w-4" />
+                            {isOpen && item.label}
                         </div>
+                        <div className="w-full"></div>
                     </Button>
                 ))}
                 <Button variant="ghost" className="w-full">
-                    <Link
-                        href="#"
-                        className="flex w-full gap-2 font-normal items-center"
-                    >
-                        <LogOut className="h-4 w-4" />
-                        {isOpen && "LogOut"}
-                    </Link>
+                    <div className="flex w-full">
+                        <LogoutButton>
+                            <span className="flex gap-2 font-normal items-center">
+                                <LogOut className="h-4 w-4" />
+                                {isOpen && "LogOut"}
+                            </span>
+                        </LogoutButton>
+                    </div>
                 </Button>
             </div>
         </aside>
