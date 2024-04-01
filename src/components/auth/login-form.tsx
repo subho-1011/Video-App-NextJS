@@ -22,9 +22,8 @@ import { Button } from "@/components/ui/button";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 
-import { login } from "@/services/auth.services";
-
 import { useRouter } from "next/navigation";
+import { login } from "@/services/login.services";
 
 export const LoginForm = () => {
     const router = useRouter();
@@ -47,18 +46,12 @@ export const LoginForm = () => {
 
         startTransition(() => {
             login(data).then((res) => {
-                console.log(res);
-                router.prefetch("/");
                 if (res.error) {
                     setError(res.error);
                 }
 
                 if (res.success) {
                     setSuccess(res.success);
-
-                    setTimeout(() => {
-                        router.push("/");
-                    }, 1000);
                 }
 
             });
