@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
+
 import { SessionProvider } from "next-auth/react";
+
+import { ThemeProvider } from "@/components/theme-provider";
+
+import Header from "@/components/layout/header";
+import Sider from "@/components/layout/sider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +27,7 @@ export default function RootLayout({
             <html lang="en">
                 <body
                     className={cn(
-                        "h-full flex items-center justify-center",
+                        "min-h-screen w-full flex flex-col items-center",
                         inter.className
                     )}
                 >
@@ -32,9 +37,11 @@ export default function RootLayout({
                         enableSystem
                         disableTransitionOnChange
                     >
-                        {children}
-                        {/* <div className="min-h-screen flex items-center justify-center">
-                    </div> */}
+                        <Header />
+                        <div className="w-full flex flex-1 justify-between">
+                            <Sider />
+                            <main className="w-full">{children}</main>
+                        </div>
                     </ThemeProvider>
                 </body>
             </html>
