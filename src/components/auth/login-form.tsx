@@ -22,11 +22,12 @@ import { Button } from "@/components/ui/button";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { login } from "@/services/login.services";
 
 export const LoginForm = () => {
-    const router = useRouter();
+    const searchParams = useSearchParams();
+    const callbackUrl = searchParams.get("callbackUrl");
 
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
@@ -45,7 +46,7 @@ export const LoginForm = () => {
         setSuccess("");
 
         startTransition(() => {
-            login(data).then((res) => {
+            login(data, callbackUrl).then((res) => {
                 if (res.error) {
                     setError(res.error);
                 }
@@ -53,7 +54,6 @@ export const LoginForm = () => {
                 if (res.success) {
                     setSuccess(res.success);
                 }
-
             });
         });
     };

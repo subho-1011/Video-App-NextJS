@@ -1,13 +1,17 @@
 "use server";
 
-import { signIn } from "@/auth";
-import { LoginFormSchema } from "@/lib/schemas";
-import { AuthError } from "next-auth";
 import { z } from "zod";
 
-const HOME_PATH = "/";
+import { LoginFormSchema } from "@/lib/schemas";
+import { DEFAULT_LOGIN_REDIRECT } from "@/route";
 
-export const login = async (data: z.infer<typeof LoginFormSchema>) => {
+import { signIn } from "@/auth";
+import { AuthError } from "next-auth";
+
+export const login = async (
+    data: z.infer<typeof LoginFormSchema>,
+    callbackUrl?: string | undefined
+) => {
     const validateData = LoginFormSchema.safeParse(data);
     if (!validateData.success) {
         return { error: "Validation failed" };
@@ -19,7 +23,7 @@ export const login = async (data: z.infer<typeof LoginFormSchema>) => {
         await signIn("credentials", {
             email,
             password,
-            redirectTo: HOME_PATH,
+            redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
         });
 
         return { success: "Login successful" };

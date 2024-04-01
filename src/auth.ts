@@ -15,6 +15,14 @@ export const {
     pages: {
         signIn: "/auth/login",
     },
+    events: {
+        async linkAccount({ user }) {
+            await db.user.update({
+                where: { id: user.id },
+                data: { emailVerified: new Date() },
+            });
+        },
+    },
     callbacks: {
         async signIn({ user, account }) {
             console.log(user);
@@ -23,11 +31,11 @@ export const {
         async session({ session, token }) {
             console.log("Session: ", session);
 
-            if(token.sub && session.user) {
+            if (token.sub && session.user) {
                 session.user.id = token.sub;
             }
 
-            if(session.user){
+            if (session.user) {
                 session.user.name = token.name;
                 session.user.email = token.email as string;
             }
