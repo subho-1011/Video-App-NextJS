@@ -6,54 +6,19 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { DashboardIcon } from "@radix-ui/react-icons";
 import {
-    HeartIcon,
     HistoryIcon,
     Home,
     LogOut,
     MenuIcon,
     PlaySquare,
     ThumbsUpIcon,
+    TvIcon,
     User2Icon,
+    Users2Icon,
 } from "lucide-react";
 import { LogoutButton } from "@/components/auth/logout-button";
-
-const navItems = [
-    {
-        label: "Home",
-        href: "/",
-        Icon: Home,
-    },
-    {
-        label: "dashboard",
-        href: "/dashboard",
-        Icon: DashboardIcon,
-    },
-    {
-        label: "Profile",
-        href: "/profile",
-        Icon: User2Icon,
-    },
-    {
-        label: "History",
-        href: "/history",
-        Icon: HistoryIcon,
-    },
-    {
-        label: "Liked Videos",
-        href: "/liked-videos",
-        Icon: ThumbsUpIcon,
-    },
-    {
-        label: "community",
-        href: "/community",
-        Icon: HeartIcon,
-    },
-    {
-        label: "Playlists",
-        href: "/playlists",
-        Icon: PlaySquare,
-    },
-];
+import Link from "next/link";
+import { Separator } from "@/components/ui/separator";
 
 const Sider = () => {
     const pathname = usePathname();
@@ -81,20 +46,146 @@ const Sider = () => {
                 >
                     <MenuIcon />
                 </Button>
-                {navItems.map((item) => (
-                    <Button
-                        variant={pathname === item.href ? "navActive" : "ghost"}
-                        key={item.label}
-                        className="w-full"
-                        onClick={() => (window.location.href = item.href)}
-                    >
-                        <div className="flex w-full gap-2 font-normal left-0 items-center">
-                            <item.Icon className="h-4 w-4" />
-                            {isOpen && item.label}
-                        </div>
-                        <div className="w-full"></div>
-                    </Button>
-                ))}
+                <nav className="w-full">
+                    <Link href="/home">
+                        <Button
+                            variant={
+                                pathname === "/home" ? "navActive" : "ghost"
+                            }
+                            className="w-full"
+                        >
+                            <div className="flex w-full gap-2 font-normal left-0 items-center">
+                                <Home className="h-4 w-4" />
+                                {isOpen && "Home"}
+                            </div>
+                            <div className="w-full"></div>
+                        </Button>
+                    </Link>
+                </nav>
+                <nav className="w-full">
+                    <Link href="/dashboard">
+                        <Button
+                            variant={
+                                pathname === "/dashboard"
+                                    ? "navActive"
+                                    : "ghost"
+                            }
+                            className="w-full"
+                        >
+                            <div className="flex w-full gap-2 font-normal left-0 items-center">
+                                <DashboardIcon className="h-4 w-4" />
+                                {isOpen && "Dashboard"}
+                            </div>
+                            <div className="w-full"></div>
+                        </Button>
+                    </Link>
+                </nav>
+                <Separator />
+                <nav className="w-full">
+                    <Link href="/history">
+                        <Button
+                            variant={
+                                pathname === "/history" ? "navActive" : "ghost"
+                            }
+                            className="w-full"
+                        >
+                            <div className="flex w-full gap-2 font-normal left-0 items-center">
+                                <HistoryIcon className="h-4 w-4" />
+                                {isOpen && "History"}
+                            </div>
+                            <div className="w-full"></div>
+                        </Button>
+                    </Link>
+                </nav>
+                <nav className="w-full">
+                    <Link href="/liked-videos">
+                        <Button
+                            variant={
+                                pathname === "/liked-videos"
+                                    ? "navActive"
+                                    : "ghost"
+                            }
+                            className="w-full"
+                        >
+                            <div className="flex w-full gap-2 font-normal left-0 items-center">
+                                <ThumbsUpIcon className="h-4 w-4" />
+                                {isOpen && "Liked Videos"}
+                            </div>
+                            <div className="w-full"></div>
+                        </Button>
+                    </Link>
+                </nav>
+                <nav className="w-full">
+                    <Link href="/subscriptions">
+                        <Button
+                            variant={
+                                pathname === "/subscriptions"
+                                    ? "navActive"
+                                    : "ghost"
+                            }
+                            className="w-full"
+                        >
+                            <div className="flex w-full gap-2 font-normal left-0 items-center">
+                                <TvIcon className="h-4 w-4" />
+                                {isOpen && "Subscriptions"}
+                            </div>
+                            <div className="w-full"></div>
+                        </Button>
+                    </Link>
+                </nav>
+                <nav className="w-full">
+                    <Link href="/playlists">
+                        <Button
+                            variant={
+                                pathname === "/playlists"
+                                    ? "navActive"
+                                    : "ghost"
+                            }
+                            className="w-full"
+                        >
+                            <div className="flex w-full gap-2 font-normal left-0 items-center">
+                                <PlaySquare className="h-4 w-4" />
+                                {isOpen && "Playlists"}
+                            </div>
+                            <div className="w-full"></div>
+                        </Button>
+                    </Link>
+                </nav>
+                <nav className="w-full">
+                    <Link href="/community">
+                        <Button
+                            variant={
+                                pathname === "/community"
+                                    ? "navActive"
+                                    : "ghost"
+                            }
+                            className="w-full"
+                        >
+                            <div className="flex w-full gap-2 font-normal left-0 items-center">
+                                <Users2Icon className="h-4 w-4" />
+                                {isOpen && "Community"}
+                            </div>
+                            <div className="w-full"></div>
+                        </Button>
+                    </Link>
+                </nav>
+                <Separator />
+                <nav className="w-full">
+                    <Link href="/profile">
+                        <Button
+                            variant={
+                                pathname === "/profile" ? "navActive" : "ghost"
+                            }
+                            className="w-full"
+                        >
+                            <div className="flex w-full gap-2 font-normal left-0 items-center">
+                                <User2Icon className="h-4 w-4" />
+                                {isOpen && "Profile"}
+                            </div>
+                            <div className="w-full"></div>
+                        </Button>
+                    </Link>
+                </nav>
                 <Button variant="ghost" className="w-full">
                     <div className="flex w-full">
                         <LogoutButton>
