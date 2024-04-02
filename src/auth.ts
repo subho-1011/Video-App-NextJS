@@ -25,11 +25,9 @@ export const {
     },
     callbacks: {
         async signIn({ user, account }) {
-            console.log(user);
             return true;
         },
         async session({ session, token }) {
-            console.log("Session: ", session);
 
             if (token.sub && session.user) {
                 session.user.id = token.sub;
@@ -52,7 +50,6 @@ export const {
             token.name = existingUser.name;
             token.email = existingUser.email;
 
-            console.log(token);
             return token;
         },
     },
