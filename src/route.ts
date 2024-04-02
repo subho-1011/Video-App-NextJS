@@ -11,7 +11,7 @@ export const publicRoutes = ["/", "/auth/new-verification"];
  * @type {string[]}
  */
 
-export const privateRoutes = ["/profile"];
+export const privateRoutes = ["/profile", "/videos/add-video"];
 
 /**
  * An array of routes that are user for authenticated

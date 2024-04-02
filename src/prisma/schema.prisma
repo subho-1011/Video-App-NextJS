@@ -53,10 +53,23 @@ model Session {
 
 model VerificationToken {
   id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  email   String   
+  email   String
   token   String   @unique
   expires DateTime
 
   @@unique([email, token])
   @@map("verificationtokens")
+}
+
+model Video {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  owner       String   @db.ObjectId
+  title       String
+  description String
+  tags        String[]
+  thumbnail   String
+  videoUrl    String
+  isPublished Boolean
+
+  @@map("videos")
 }
