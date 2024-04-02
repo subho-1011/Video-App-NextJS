@@ -10,9 +10,7 @@ export default auth((req) => {
     const isLoggedIn = !!req.auth;
 
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
-    const isPrivateRoute =
-        privateRoutes.includes(nextUrl.pathname) ||
-        nextUrl.pathname.startsWith("/profile");
+    const isPrivateRoute = privateRoutes.includes(nextUrl.pathname) || nextUrl.pathname.startsWith("/profile");
 
     if (isAuthRoute && isLoggedIn) {
         return NextResponse.redirect(new URL("/", nextUrl));
@@ -26,19 +24,15 @@ export default auth((req) => {
         }
         const encodedCallbackUrl = encodeURIComponent(callbackUrl);
 
-        return NextResponse.redirect(
-            new URL(`/auth/login?callbackUrl=${encodedCallbackUrl}`, nextUrl)
-        );
+        return NextResponse.redirect(new URL(`/auth/login?callbackUrl=${encodedCallbackUrl}`, nextUrl));
+    }
+
+    // if home page then redirect to "/"
+    if (nextUrl.pathname === "/home") {
+        return NextResponse.redirect(new URL("/", nextUrl));
     }
 });
 
-// export function middleware(request: NextRequest) {
-//     const { nextUrl } = request;
-//     console.log(nextUrl);
-
-//     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
-//     return NextResponse.next();
-// }
 
 const config = {
     matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],

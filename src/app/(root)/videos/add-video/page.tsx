@@ -1,4 +1,4 @@
-import AddVideoForm from "@/components/add-video-form";
+import AddVideoForm from "@/app/(root)/videos/_components/add-video-form";
 
 const AddVideoPage = () => {
     return <AddVideoForm />;

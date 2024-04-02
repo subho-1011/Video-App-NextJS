@@ -39,19 +39,13 @@ const Sider = () => {
     return (
         <aside className="min-h-screen border-r hidden sm:flex">
             <div className="flex flex-col w-full h-fit p-3 items-start space-y-2">
-                <Button
-                    variant="ghost"
-                    className=""
-                    onClick={() => setIsOpen(!isOpen)}
-                >
+                <Button variant="ghost" className="" onClick={() => setIsOpen(!isOpen)}>
                     <MenuIcon />
                 </Button>
                 <nav className="w-full">
                     <Link href="/home">
                         <Button
-                            variant={
-                                pathname === "/home" ? "navActive" : "ghost"
-                            }
+                            variant={pathname === "/home" || pathname === "/" ? "navActive" : "ghost"}
                             className="w-full"
                         >
                             <div className="flex w-full gap-2 font-normal left-0 items-center">
@@ -64,14 +58,7 @@ const Sider = () => {
                 </nav>
                 <nav className="w-full">
                     <Link href="/dashboard">
-                        <Button
-                            variant={
-                                pathname === "/dashboard"
-                                    ? "navActive"
-                                    : "ghost"
-                            }
-                            className="w-full"
-                        >
+                        <Button variant={pathname === "/dashboard" ? "navActive" : "ghost"} className="w-full">
                             <div className="flex w-full gap-2 font-normal left-0 items-center">
                                 <DashboardIcon className="h-4 w-4" />
                                 {isOpen && "Dashboard"}
@@ -83,12 +70,7 @@ const Sider = () => {
                 <Separator />
                 <nav className="w-full">
                     <Link href="/history">
-                        <Button
-                            variant={
-                                pathname === "/history" ? "navActive" : "ghost"
-                            }
-                            className="w-full"
-                        >
+                        <Button variant={pathname === "/history" ? "navActive" : "ghost"} className="w-full">
                             <div className="flex w-full gap-2 font-normal left-0 items-center">
                                 <HistoryIcon className="h-4 w-4" />
                                 {isOpen && "History"}
@@ -99,14 +81,7 @@ const Sider = () => {
                 </nav>
                 <nav className="w-full">
                     <Link href="/liked-videos">
-                        <Button
-                            variant={
-                                pathname === "/liked-videos"
-                                    ? "navActive"
-                                    : "ghost"
-                            }
-                            className="w-full"
-                        >
+                        <Button variant={pathname === "/liked-videos" ? "navActive" : "ghost"} className="w-full">
                             <div className="flex w-full gap-2 font-normal left-0 items-center">
                                 <ThumbsUpIcon className="h-4 w-4" />
                                 {isOpen && "Liked Videos"}
@@ -117,14 +92,7 @@ const Sider = () => {
                 </nav>
                 <nav className="w-full">
                     <Link href="/subscriptions">
-                        <Button
-                            variant={
-                                pathname === "/subscriptions"
-                                    ? "navActive"
-                                    : "ghost"
-                            }
-                            className="w-full"
-                        >
+                        <Button variant={pathname === "/subscriptions" ? "navActive" : "ghost"} className="w-full">
                             <div className="flex w-full gap-2 font-normal left-0 items-center">
                                 <TvIcon className="h-4 w-4" />
                                 {isOpen && "Subscriptions"}
@@ -135,14 +103,7 @@ const Sider = () => {
                 </nav>
                 <nav className="w-full">
                     <Link href="/playlists">
-                        <Button
-                            variant={
-                                pathname === "/playlists"
-                                    ? "navActive"
-                                    : "ghost"
-                            }
-                            className="w-full"
-                        >
+                        <Button variant={pathname === "/playlists" ? "navActive" : "ghost"} className="w-full">
                             <div className="flex w-full gap-2 font-normal left-0 items-center">
                                 <PlaySquare className="h-4 w-4" />
                                 {isOpen && "Playlists"}
@@ -153,14 +114,7 @@ const Sider = () => {
                 </nav>
                 <nav className="w-full">
                     <Link href="/community">
-                        <Button
-                            variant={
-                                pathname === "/community"
-                                    ? "navActive"
-                                    : "ghost"
-                            }
-                            className="w-full"
-                        >
+                        <Button variant={pathname === "/community" ? "navActive" : "ghost"} className="w-full">
                             <div className="flex w-full gap-2 font-normal left-0 items-center">
                                 <Users2Icon className="h-4 w-4" />
                                 {isOpen && "Community"}
@@ -172,12 +126,7 @@ const Sider = () => {
                 <Separator />
                 <nav className="w-full">
                     <Link href="/profile">
-                        <Button
-                            variant={
-                                pathname === "/profile" ? "navActive" : "ghost"
-                            }
-                            className="w-full"
-                        >
+                        <Button variant={pathname === "/profile" ? "navActive" : "ghost"} className="w-full">
                             <div className="flex w-full gap-2 font-normal left-0 items-center">
                                 <User2Icon className="h-4 w-4" />
                                 {isOpen && "Profile"}
