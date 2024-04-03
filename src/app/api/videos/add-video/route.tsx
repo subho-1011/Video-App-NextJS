@@ -5,20 +5,13 @@ import { currentUserId } from "@/lib/auth";
 import { bufferFile } from "@/lib/write-buffer-file";
 
 import { NextRequest, NextResponse } from "next/server";
+import { slugTransform } from "@/lib/utils";
 
 export async function POST(request: NextRequest) {
     const resBody = await request.formData();
-    if (!resBody.get("title")) {
-        return NextResponse.json({ error: "Title is required" }, { status: 404 });
-    }
-    if (!resBody.get("description")) {
-        return NextResponse.json({ error: "Description is required" }, { status: 404 });
-    }
-    if (!resBody.get("thumbnail")) {
-        return NextResponse.json({ error: "Thumbnail is required" }, { status: 404 });
-    }
-    if (!resBody.get("video")) {
-        return NextResponse.json({ error: "Video is required" }, { status: 404 });
+
+    if (["title", "description", "thumbnail", "video"].some((field) => !resBody.get(field))) {
+        return NextResponse.json({ error: "Please fill all the fields" }, { status: 404 });
     }
 
     const title = resBody.get("title");
@@ -28,8 +21,8 @@ export async function POST(request: NextRequest) {
     const isPublished = resBody.get("isPublished");
 
     try {
-        const owner = await currentUserId();
-        if (owner === undefined) {
+        const ownerId = await currentUserId();
+        if (ownerId === undefined) {
             return NextResponse.json({ error: " owner is required" }, { status: 404 });
         }
 
@@ -47,12 +40,15 @@ export async function POST(request: NextRequest) {
 
         const addVideoResponse = await db.video.create({
             data: {
+                ownerId,
                 title: title as string,
+                slug: slugTransform(title as string),
                 description: description as string,
                 thumbnail: thumbnailData.secure_url as string,
                 videoUrl: videoData.secure_url as string,
-                owner,
-                isPublished: isPublished ? !!isPublished : true,
+                views: 0,
+                duration: videoData.duration,
+                isPublished: isPublished === "true" ? true : false,
             },
         });
         if (!addVideoResponse) {

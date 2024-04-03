@@ -1,5 +1,21 @@
 import axios from "axios";
 
+import { IVideoCard } from "@/lib/types";
+
+export const getAllVideos = async (): Promise<{ data?: IVideoCard[]; error?: string; success?: string }> => {
+    try {
+        const videos = await axios.get(`/api/videos`);
+
+        return videos.data;
+    } catch (error: any) {
+        if (error.response) {
+            return error.response.data;
+        }
+
+        return { error: "Something went wrong" };
+    }
+};
+
 export const addVideo = async (formData: any) => {
     console.log(formData);
 
