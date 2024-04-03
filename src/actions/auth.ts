@@ -5,13 +5,10 @@ import { z } from "zod";
 import { LoginFormSchema } from "@/lib/schemas";
 import { DEFAULT_LOGIN_REDIRECT } from "@/route";
 
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 import { AuthError } from "next-auth";
 
-export const login = async (
-    data: z.infer<typeof LoginFormSchema>,
-    callbackUrl?: string | undefined
-) => {
+export const login = async (data: z.infer<typeof LoginFormSchema>, callbackUrl?: string | undefined) => {
     const validateData = LoginFormSchema.safeParse(data);
     if (!validateData.success) {
         return { error: "Validation failed" };
@@ -39,4 +36,8 @@ export const login = async (
 
         throw err;
     }
+};
+
+export const logout = async () => {
+    await signOut();
 };

@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { logout } from "@/services/logout";
+import { logout } from "@/actions/auth";
 
 export const LogoutButton = ({ children }: { children?: React.ReactNode }) => {
     const router = useRouter();
