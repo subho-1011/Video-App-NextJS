@@ -87,7 +87,7 @@ model Video {
   thumbnail   String
   videoUrl    String
   views       Int?
-  duration    Int?
+  duration    Float?
   isPublished Boolean  @default(true)
   createAt    DateTime @default(now())
   updataAt    DateTime @updatedAt

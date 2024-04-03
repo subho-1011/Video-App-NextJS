@@ -49,13 +49,14 @@ const AddVideoForm = () => {
     });
 
     const onSubmit = (data: z.infer<typeof AddVideoSchema>) => {
-        setError(undefined);
-        setSuccess(undefined);
+        setError("");
+        setSuccess("");
         setIsLoading(true);
 
         const formData = new FormData();
         formData.set("title", data.title);
         formData.set("description", data.description);
+        formData.append("isPublished", String(data.isPublished));
 
         if (!thumbnail) {
             setError("Please provide a thumbnail");
@@ -73,7 +74,6 @@ const AddVideoForm = () => {
 
         addVideo(formData)
             .then((res) => {
-                console.log(res);
                 if (res.success) {
                     setSuccess(res.success);
                 }

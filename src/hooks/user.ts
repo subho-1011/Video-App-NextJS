@@ -20,3 +20,11 @@ export const useAvatarFallback = () => {
         .map((word) => word.charAt(0).toUpperCase())
         .join("");
 };
+
+export const createAvatarFallback = (name?: string) => {
+    return name
+        ?.split(" ")
+        .slice(0, 2)
+        .map((word) => word.charAt(0).toUpperCase())
+        .join("");
+};
