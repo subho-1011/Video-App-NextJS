@@ -15,8 +15,14 @@ model User {
   emailVerified DateTime? @map("email_verified")
   image         String?
   password      String?
-  accounts      Account[]
-  sessions      Session[]
+  createAt      DateTime? @default(now())
+
+  accounts   Account[]
+  sessions   Session[]
+  videos     Video[]
+  likes      Like[]
+  comments   Comment[]
+  communitys Community[]
 
   @@map("users")
 }
@@ -61,15 +67,93 @@ model VerificationToken {
   @@map("verificationtokens")
 }
 
+model ResetPasswordToken {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+  @@map("resetpasswordtokens")
+}
+
 model Video {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  owner       String   @db.ObjectId
+  ownerId     String   @db.ObjectId
   title       String
-  description String
+  slug        String
+  description String?
   tags        String[]
   thumbnail   String
   videoUrl    String
-  isPublished Boolean
+  views       Int?
+  duration    Int?
+  isPublished Boolean  @default(true)
+  createAt    DateTime @default(now())
+  updataAt    DateTime @updatedAt
+
+  likes    Like[]
+  comments Comment[]
+
+  owner User @relation(fields: [ownerId], references: [id])
 
   @@map("videos")
+}
+
+model Like {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId     String   @db.ObjectId
+  videoId     String?  @db.ObjectId
+  commentId   String?  @db.ObjectId
+  communityId String?  @db.ObjectId
+  createAt    DateTime @default(now())
+
+  owner     User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  video     Video?     @relation(fields: [videoId], references: [id], onDelete: Cascade)
+  comment   Comment?   @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  community Community? @relation(fields: [communityId], references: [id], onDelete: Cascade)
+
+  @@map("likes")
+}
+
+model Comment {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId     String   @db.ObjectId
+  videoId     String?  @db.ObjectId
+  commentId   String?  @db.ObjectId
+  communityId String?  @db.ObjectId
+  createAt    DateTime @default(now())
+
+  like Like[]
+
+  owner     User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  video     Video?     @relation(fields: [videoId], references: [id], onDelete: Cascade)
+  community Community? @relation(fields: [communityId], references: [id], onDelete: Cascade)
+
+  @@map("comments")
+}
+
+model Community {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId  String   @db.ObjectId
+  text     String?  @db.ObjectId
+  imageUrl String?
+  createAt DateTime @default(now())
+
+  like    Like[]
+  Comment Comment[]
+
+  owner User @relation(fields: [ownerId], references: [id])
+
+  @@map("communitys")
+}
+
+model Subscription {
+  id                    String   @id @default(auto()) @map("_id") @db.ObjectId
+  subscriberId          String?  @db.ObjectId
+  channelToSubscribedId String?  @db.ObjectId
+  createAt              DateTime @default(now())
+  updateAt              DateTime
+
+  @@map("subscriptions")
 }
