@@ -15,9 +15,9 @@ import { VideoClickButton } from "../video-click-button";
 import { DashboardButton } from "../dashboard-button";
 import { timeInterval } from "@/lib/utils";
 
-export const VideoCard = ({ id, title, thumbnail, views, likes, duration, createAt, owner }: IVideoCard) => {
+export const VideoCard = ({ id, title, thumbnail, views, likes, duration, createdAt, owner }: IVideoCard) => {
     const avatarFallback = createAvatarFallback(owner.name);
-    const createdTimeInterval = timeInterval(createAt.toString());
+    const createdTimeInterval = timeInterval(createdAt.toString());
 
     return (
         <Card className="space-y-3 border-0">
