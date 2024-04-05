@@ -89,8 +89,8 @@ model Video {
   views       Int?
   duration    Float?
   isPublished Boolean  @default(true)
-  createAt    DateTime @default(now())
-  updataAt    DateTime @updatedAt
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   likes    Like[]
   comments Comment[]
@@ -106,7 +106,7 @@ model Like {
   videoId     String?  @db.ObjectId
   commentId   String?  @db.ObjectId
   communityId String?  @db.ObjectId
-  createAt    DateTime @default(now())
+  createdAt    DateTime @default(now())
 
   owner     User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   video     Video?     @relation(fields: [videoId], references: [id], onDelete: Cascade)
@@ -122,7 +122,7 @@ model Comment {
   videoId     String?  @db.ObjectId
   commentId   String?  @db.ObjectId
   communityId String?  @db.ObjectId
-  createAt    DateTime @default(now())
+  createdAt    DateTime @default(now())
 
   like Like[]
 
@@ -138,7 +138,7 @@ model Community {
   ownerId  String   @db.ObjectId
   text     String?  @db.ObjectId
   imageUrl String?
-  createAt DateTime @default(now())
+  createdAt DateTime @default(now())
 
   like    Like[]
   Comment Comment[]
@@ -152,8 +152,7 @@ model Subscription {
   id                    String   @id @default(auto()) @map("_id") @db.ObjectId
   subscriberId          String?  @db.ObjectId
   channelToSubscribedId String?  @db.ObjectId
-  createAt              DateTime @default(now())
-  updateAt              DateTime
+  createdAt              DateTime @default(now())
 
   @@map("subscriptions")
 }

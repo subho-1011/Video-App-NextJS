@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
                 thumbnail: true,
                 duration: true,
                 views: true,
-                createAt: true,
+                createdAt: true,
                 owner: {
                     select: {
                         id: true,

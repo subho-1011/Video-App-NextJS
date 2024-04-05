@@ -43,7 +43,7 @@ const Sider = () => {
                     <MenuIcon />
                 </Button>
                 <nav className="w-full">
-                    <Link href="/home">
+                    <Link href="/">
                         <Button
                             variant={pathname === "/home" || pathname === "/" ? "navActive" : "ghost"}
                             className="w-full"
