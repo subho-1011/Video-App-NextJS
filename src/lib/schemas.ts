@@ -53,6 +53,25 @@ export const fileSchema = {
         }),
 };
 
+export const EditVideoSchema = z.object({
+    title: z
+        .string()
+        .min(1, {
+            message: "Title is required",
+        })
+        .trim(),
+    description: z
+        .string()
+        .min(1, {
+            message: "Description is required",
+        })
+        .trim(),
+    tags: z.optional(z.array(z.string())),
+    thumbnail: z.any(),
+    video: z.any(),
+    isPublished: z.boolean().default(true),
+});
+
 // TODO: Can add categories here
 export const AddVideoSchema = z.object({
     title: z

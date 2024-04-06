@@ -77,9 +77,19 @@ export const getAllVideos = async (): Promise<{ data?: IVideoCard[]; error?: str
     }
 };
 
-export const addVideo = async (formData: any) => {
-    console.log(formData);
+export const editVideo = async (formData: any, videoId: string) => {
+    try {
+        const res = await axios.post(`/api/videos/${videoId}/edit-video`, formData);
 
+        return res.data;
+    } catch (error: any) {
+        if (error.response) {
+            return error.response.data;
+        }
+    }
+};
+
+export const addVideo = async (formData: any) => {
     try {
         const res = await axios.post(`/api/videos/add-video`, formData);
 
