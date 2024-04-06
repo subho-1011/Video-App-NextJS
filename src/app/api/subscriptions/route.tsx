@@ -22,6 +22,8 @@ export async function GET(request: NextRequest) {
 
     const channelDetails = await Promise.all(
         channelIds.map(async (id) => {
+            if (!id) return null;
+
             const channel = await db.user.findUnique({
                 where: { id },
                 select: {
@@ -48,9 +50,10 @@ export async function GET(request: NextRequest) {
                 },
             });
 
-            const totalVideos = channel.videos.length;
+            const totalVideos = channel!.videos.length;
 
-            const totalViews = channel.videos.reduce((total: number, video) => {
+            const totalViews = channel!.videos.reduce((total: number, video) => {
+                if (!video.views) return total;
                 return total + video.views;
             }, 0);
 

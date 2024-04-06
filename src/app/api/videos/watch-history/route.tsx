@@ -37,7 +37,7 @@ export async function PATCH(request: NextRequest) {
     await db.video.update({
         where: { id: videoId },
         data: {
-            views: video.views + 1,
+            views: video.views ? video.views + 1 : 1,
         },
     });
 

@@ -29,8 +29,9 @@ export async function GET(request: NextRequest) {
 
     const res = await Promise.all(
         likesByUser.map(async (like) => {
+            
             const video = await db.video.findUnique({
-                where: { id: like.videoId },
+                where: { id: like.videoId! },
                 include: {
                     owner: {
                         select: {

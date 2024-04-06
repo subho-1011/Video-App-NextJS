@@ -59,6 +59,8 @@ const EditVideoForm = ({ videoId }: { videoId: string }) => {
     });
 
     const onSubmit = (data: z.infer<typeof EditVideoSchema>) => {
+        if (!video?.id) return;
+
         if (video?.owner.id !== user?.id) {
             console.log("You are not the owner of this video");
             return;
