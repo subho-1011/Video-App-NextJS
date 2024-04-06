@@ -13,7 +13,7 @@ export async function PATCH(request: NextRequest) {
     }
 
     const videoId = searchParams.get("v");
-    const video = !!(await getVideoById(videoId!));
+    const video = await getVideoById(videoId!);
     if (!videoId || !video) {
         return NextResponse.json({ error: "Valid video id required" }, { status: 404 });
     }
@@ -32,6 +32,14 @@ export async function PATCH(request: NextRequest) {
     if (!updatedUser) {
         return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
     }
+
+    // add video views
+    await db.video.update({
+        where: { id: videoId },
+        data: {
+            views: video.views + 1,
+        },
+    });
 
     return NextResponse.json({ data: updatedUser, success: "Watch history updated successfully" }, { status: 200 });
 }

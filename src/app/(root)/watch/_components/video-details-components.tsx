@@ -70,7 +70,7 @@ export const DetailsComponent = ({ videoId }: { videoId: string }) => {
                 id={video.id}
                 name={video.owner.name}
                 avatar={video.owner.image}
-                ownerId={video.owner.id}
+                username={video.owner.username}
                 isLiked={video.isLiked}
                 likes={video.likes}
                 isSubscribed={video.isSubscribed}
@@ -100,7 +100,7 @@ const ButtonsContainer = ({
     id,
     name,
     avatar,
-    ownerId,
+    username,
     isLiked,
     likes,
     isSubscribed,
@@ -111,7 +111,7 @@ const ButtonsContainer = ({
     id: string;
     name: string;
     avatar: string;
-    ownerId: string;
+    username: string;
     isLiked: boolean;
     likes: number;
     isSubscribed: boolean;
@@ -122,8 +122,8 @@ const ButtonsContainer = ({
     return (
         <div className="flex flex-col-reverse md:flex-row gap-x-2 gap-y-4 justify-between">
             <div className="flex gap-x-4 items-center">
-                <OwnerAvatarButton ownerId={ownerId} name={name} avatar={avatar} />
-                <DashboardButton userId={ownerId}>
+                <OwnerAvatarButton username={username} name={name} avatar={avatar} />
+                <DashboardButton userId={username}>
                     <div className="flex flex-col justify-center">
                         <h1 className="font-normal">{name}</h1>
                         <p className="text-muted-foreground text-sm">{subscribers} subscribers</p>

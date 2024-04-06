@@ -1,6 +1,6 @@
 "use client";
 
-import { addVideoInHistory } from "@/services/video.services";
+import { addVideoInHistoryAndViews } from "@/services/video.services";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -9,7 +9,7 @@ export const VideoClickButton = ({ children, videoId }: { children: React.ReactN
 
     const onClick = async () => {
         router.push(`/watch?v=${videoId}`);
-        await addVideoInHistory(videoId);
+        await addVideoInHistoryAndViews(videoId);
     };
 
     return (

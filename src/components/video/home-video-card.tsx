@@ -39,7 +39,7 @@ export const VideoCard = ({ id, title, thumbnail, views, likes, duration, create
             </Card>
             <CardFooter className="flex items-start gap-4 px-3">
                 <div className="flex items-end justify-end h-full">
-                    <DashboardButton userId={owner.id}>
+                    <DashboardButton userId={owner.username}>
                         <Avatar className="h-10 w-10 ring-1 ring-slate-600">
                             <AvatarImage src={owner.image}></AvatarImage>
                             <AvatarFallback>{avatarFallback ? avatarFallback : <User2Icon />}</AvatarFallback>
@@ -51,7 +51,7 @@ export const VideoCard = ({ id, title, thumbnail, views, likes, duration, create
                         <VideoClickButton videoId={id}>{title}</VideoClickButton>
                     </h1>
                     <h1 className="text-muted-foreground">
-                        <DashboardButton userId={owner.id}>@{owner.username}</DashboardButton>
+                        <DashboardButton userId={owner.username}>@{owner.username}</DashboardButton>
                     </h1>
                     <p className="text-muted-foreground inline-flex">
                         <span>

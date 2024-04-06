@@ -2,7 +2,7 @@ import axios from "axios";
 
 import { IVideoCard } from "@/lib/types";
 
-export const addVideoInHistory = async (videoId: string) => {
+export const addVideoInHistoryAndViews = async (videoId: string) => {
     try {
         const res = await axios.patch(`/api/videos/watch-history?v=${videoId}`);
 
