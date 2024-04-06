@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { SubscriptionCard } from "./subscription-card";
 import { getSubscribedChannels } from "@/services/subscriptions.services";
 import { useCurrentUser } from "@/hooks/user";
+import SubscriptionSkeletonPage from "./subscription-skeleton-page";
 
 interface IChannel {
     id: string;
@@ -41,7 +42,7 @@ const Subscriptions = () => {
     return (
         <>
             {isLoading ? (
-                <IsLoading />
+                <SubscriptionSkeletonPage />
             ) : (
                 <div className="flex min-h-screen flex-col">
                     {!channels ? (
@@ -77,3 +78,5 @@ const IsLoading = () => {
         </div>
     );
 };
+
+
