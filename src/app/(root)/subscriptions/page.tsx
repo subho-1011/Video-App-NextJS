@@ -1,7 +1,7 @@
-import React from "react";
+import Subscriptions from "@/components/subscriptions";
 
 const SubscriptionsPage = () => {
-    return <div>SubscriptionsPage</div>;
+    return <Subscriptions />;
 };
 
 export default SubscriptionsPage;
