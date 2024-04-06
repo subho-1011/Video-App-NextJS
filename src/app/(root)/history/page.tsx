@@ -1,7 +1,5 @@
-import React from "react";
+import WatchHistory from "@/components/watch-history";
 
-const HistoryPage = () => {
-    return <div>HistoryPage</div>;
-};
-
-export default HistoryPage;
+export default function HistoryPage() {
+    return <WatchHistory />;
+}

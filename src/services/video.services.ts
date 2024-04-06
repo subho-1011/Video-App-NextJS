@@ -2,6 +2,30 @@ import axios from "axios";
 
 import { IVideoCard } from "@/lib/types";
 
+export const addVideoInHistory = async (videoId: string) => {
+    try {
+        const res = await axios.patch(`/api/videos/watch-history?v=${videoId}`);
+
+        return res.data;
+    } catch (error: any) {
+        if (error.response) {
+            return error.response.data;
+        }
+    }
+};
+
+export const getWatchHistory = async () => {
+    try {
+        const videos = await axios.get(`/api/videos/watch-history`);
+
+        return videos.data;
+    } catch (error: any) {
+        if (error.response) {
+            return error.response.data;
+        }
+    }
+};
+
 export const getLikedVideos = async () => {
     try {
         const videos = await axios.get(`/api/videos/liked-videos`);
