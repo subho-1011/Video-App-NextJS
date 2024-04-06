@@ -1,7 +1,5 @@
-import React from "react";
+import LikedVideo from "@/components/liked-video";
 
-const LikedVideosPage = () => {
-    return <div>LikedVideosPage</div>;
-};
-
-export default LikedVideosPage;
+export default function LikedVideoPage() {
+    return <LikedVideo />;
+}

@@ -2,6 +2,18 @@ import axios from "axios";
 
 import { IVideoCard } from "@/lib/types";
 
+export const getLikedVideos = async () => {
+    try {
+        const videos = await axios.get(`/api/videos/liked-videos`);
+
+        return videos.data;
+    } catch (error: any) {
+        if (error.response) {
+            return error.response.data;
+        }
+    }
+};
+
 export const toggleLikedButton = async (videoId: string) => {
     try {
         const res = await axios.post(`/api/videos/${videoId}/toggle-like`, { next: { tag: "likes" } });
