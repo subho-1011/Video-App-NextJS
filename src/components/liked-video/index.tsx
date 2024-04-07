@@ -7,8 +7,12 @@ import { VideoCard } from "@/components/video/home-video-card";
 import { getAllVideos, getLikedVideos } from "@/services/video.services";
 import { IVideoCard } from "@/lib/types";
 import { SkeletonPage } from "../home-skeleton-page";
+import { useCurrentUser } from "@/hooks/user";
+import NotLogin from "../not-login";
 
 const LikedVideo = () => {
+    const user = useCurrentUser();
+
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const [error, setError] = useState<string | undefined>();
@@ -34,6 +38,8 @@ const LikedVideo = () => {
             })
             .finally(() => setIsLoading(false));
     }, []);
+
+    if (!user) return <NotLogin />;
 
     return (
         <>

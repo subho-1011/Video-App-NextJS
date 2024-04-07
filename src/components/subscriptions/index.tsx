@@ -5,6 +5,7 @@ import { SubscriptionCard } from "./subscription-card";
 import { getSubscribedChannels } from "@/services/subscriptions.services";
 import { useCurrentUser } from "@/hooks/user";
 import SubscriptionSkeletonPage from "./subscription-skeleton-page";
+import NotLogin from "../not-login";
 
 interface IChannel {
     id: string;
@@ -38,6 +39,8 @@ const Subscriptions = () => {
 
         setIsLoading(false);
     }, [user]);
+
+    if (!user) return <NotLogin />;
 
     return (
         <>
