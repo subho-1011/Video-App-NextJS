@@ -123,7 +123,7 @@ export const CommentCard = ({
                     </div>
                     <div className="flex gap-x-8 text-primary/60">
                         <Button variant="ghost2" className="flex gap-2" onClick={() => onToggleLiked(comment)}>
-                            {comment.owner.id === useCurrentUser()?.id && comment.isLiked ? (
+                            {comment.owner.id === user?.id && comment.isLiked ? (
                                 <ThumbsUpIcon className=" fill-current" />
                             ) : (
                                 <ThumbsUpIcon />

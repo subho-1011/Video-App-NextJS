@@ -103,6 +103,7 @@ const VideoComments = () => {
             });
     };
 
+
     return (
         <div className="flex flex-col gap-4 w-full px-2">
             <h1 className="text-2xl ml-3">{totalComments} Comments</h1>

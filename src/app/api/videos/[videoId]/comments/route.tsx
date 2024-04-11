@@ -39,11 +39,15 @@ export async function GET(request: NextRequest, { params }: { params: { videoId:
         orderBy: { createdAt: "desc" },
     });
 
-    const totalComments = comments.length;
-
     const commentsWithTotalLikes = comments.map((comment) => {
         const likes = comment.like.length;
-        const isLiked = comment.like.includes({ id: comment.id, ownerId: userId! });
+
+        let isLiked = false;
+        comment.like.forEach((like) => {
+            if (like.ownerId === userId) {
+                return (isLiked = true);
+            }
+        });
 
         return {
             ...comment,
@@ -57,7 +61,6 @@ export async function GET(request: NextRequest, { params }: { params: { videoId:
             success: "All comments fetch successfully",
             data: {
                 comments: commentsWithTotalLikes,
-                totalComments,
             },
         },
         { status: 200 }
