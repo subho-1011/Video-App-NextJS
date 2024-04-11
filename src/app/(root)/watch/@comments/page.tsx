@@ -1,5 +1,5 @@
-import React from "react";
+import VideoComments from "@/app/(root)/watch/_components/video-comments";
 
-export default function VideoComments() {
-    return <div>VideoComments</div>;
+export default function VideoCommentsPage() {
+    return <VideoComments />;
 }
