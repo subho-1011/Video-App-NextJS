@@ -63,12 +63,16 @@ export const DetailsComponent = ({ videoId }: { videoId: string }) => {
         setVideo({ ...video, isSubscribed: res.isSubscribed, subscribers: res.subscribers });
     };
 
+    const isOwner = video.owner.id === user?.id ? true : false;
+    console.log(`isOwner: ${isOwner}`);
+
     return (
         <div className="flex flex-col space-y-3 px-2">
             <VideoTitle title={video.title} />
             <ButtonsContainer
                 id={video.id}
                 name={video.owner.name}
+                isOwner={isOwner}
                 avatar={video.owner.image}
                 username={video.owner.username}
                 isLiked={video.isLiked}
@@ -99,6 +103,7 @@ const VideoTitle = ({ title }: { title: string }) => {
 const ButtonsContainer = ({
     id,
     name,
+    isOwner,
     avatar,
     username,
     isLiked,
@@ -110,6 +115,7 @@ const ButtonsContainer = ({
 }: {
     id: string;
     name: string;
+    isOwner: boolean;
     avatar: string;
     username: string;
     isLiked: boolean;
@@ -135,7 +141,12 @@ const ButtonsContainer = ({
                 />
             </div>
             <div className="flex gap-x-10 items-center justify-end">
-                <VideoLikeButton isLiked={isLiked} likes={likes} onToggleLikeButton={onToggleLikeButton} />
+                <VideoLikeButton
+                    isLiked={isLiked}
+                    likes={likes}
+                    onToggleLikeButton={onToggleLikeButton}
+                    isOwner={isOwner}
+                />
                 <VideoShareButton />
             </div>
         </div>

@@ -4,6 +4,8 @@ import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest, { params }: { params: { videoId: string } }) {
+    const userId = await currentUserId();
+
     const videoId = params.videoId;
 
     if (!videoId) {
@@ -41,9 +43,11 @@ export async function GET(request: NextRequest, { params }: { params: { videoId:
 
     const commentsWithTotalLikes = comments.map((comment) => {
         const likes = comment.like.length;
+        const isLiked = comment.like.includes({ id: comment.id, ownerId: userId! });
 
         return {
             ...comment,
+            isLiked,
             likes,
         };
     });

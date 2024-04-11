@@ -6,17 +6,23 @@ import { useSearchParams } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import { CommentCard } from "@/components/comment-card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 
-import { SendHorizonalIcon, User2Icon } from "lucide-react";
+import { SendHorizonalIcon } from "lucide-react";
 
 import { useCurrentUser } from "@/hooks/user";
 
-import { addVideoComment, deleteComment, editComments, getAllVideoComments } from "@/services/comments.services";
+import {
+    addVideoComment,
+    deleteComment,
+    editComments,
+    getAllVideoComments,
+    toggleLikedAComment,
+} from "@/services/comments.services";
+import { AvatarCard } from "@/components/avatar-card";
 
 const VideoComments = () => {
     const user = useCurrentUser();
@@ -56,8 +62,9 @@ const VideoComments = () => {
     const onAddComment = (data: { text: string }) => {
         addVideoComment(videoId, data)
             .then((res) => {
+                console.log(res);
+
                 if (res.success) {
-                    console.log(res);
                     setComments([res.data.comment, ...comments]);
                 }
             })
@@ -75,6 +82,24 @@ const VideoComments = () => {
             })
             .catch((err) => {
                 console.log(err);
+            });
+    };
+
+    const onToggleLike = (comment: TVideoComment) => {
+        toggleLikedAComment(comment.id)
+            .then((res) => {
+                console.log(res);
+
+                if (res.success) {
+                    setComments(
+                        comments.map((c) =>
+                            c.id === comment.id ? { ...c, isLiked: res.isLiked, likes: res.likes } : c
+                        )
+                    );
+                }
+            })
+            .catch(() => {
+                console.log("Something went wrong");
             });
     };
 
@@ -99,6 +124,7 @@ const VideoComments = () => {
                             userId={user?.id}
                             onDelete={() => onDelete(comment)}
                             onEdit={(comment, text) => onEdit(comment, text)}
+                            onToggleLiked={() => onToggleLike(comment)}
                         />
                     ))}
                 </CardContent>
@@ -108,24 +134,6 @@ const VideoComments = () => {
 };
 
 export default VideoComments;
-
-const AvatarCard = ({ image, name }: { image: string; name: string }) => {
-    return (
-        <div className="flex items-center gap-x-3">
-            <Avatar className="w-12 h-12">
-                <AvatarImage src={image}></AvatarImage>
-                <AvatarFallback>
-                    <User2Icon />
-                </AvatarFallback>
-            </Avatar>
-
-            <div className="flex flex-col">
-                <h1>{name}</h1>
-                {/* <p className="text-primary/60">@username</p> */}
-            </div>
-        </div>
-    );
-};
 
 export const InputForm = ({ onAddComment }: { onAddComment: (data: { text: string }) => void }) => {
     const { register, handleSubmit, reset } = useForm<{ text: string }>({

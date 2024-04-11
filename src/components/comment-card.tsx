@@ -20,17 +20,20 @@ import { SendHorizonalIcon, ThumbsUpIcon, User2Icon } from "lucide-react";
 import { useCurrentUser } from "@/hooks/user";
 
 import { editComments, toggleLikedAComment } from "@/services/comments.services";
+import { AvatarLogo } from "./avatar-card";
 
 export const CommentCard = ({
     comment,
     userId,
     onDelete,
     onEdit,
+    onToggleLiked,
 }: {
     comment: TVideoComment;
     userId?: string;
     onDelete: (comment: TVideoComment) => void;
     onEdit: (comment: TVideoComment, text: string) => void;
+    onToggleLiked: (comment: TVideoComment) => void;
 }) => {
     const user = useCurrentUser();
 
@@ -75,25 +78,10 @@ export const CommentCard = ({
         }
     };
 
-    const onToggleLike = () => {
-        toggleLikedAComment(comment.id)
-            .then((res) => {
-                console.log(res);
-            })
-            .catch(() => {
-                console.log("Something went wrong");
-            });
-    };
-
     return (
         <CardContent className="p-1 py-2">
             <div className="flex">
-                <Avatar className="w-12 h-12">
-                    <AvatarImage src={comment.owner.image!}></AvatarImage>
-                    <AvatarFallback>
-                        <User2Icon />
-                    </AvatarFallback>
-                </Avatar>
+                <AvatarLogo image={comment.owner.image} />
                 <div className="flex flex-col w-full gap-y-2 ml-4">
                     <div className="flex justify-between items-center">
                         <div className="flex flex-col">
@@ -134,8 +122,13 @@ export const CommentCard = ({
                         )}
                     </div>
                     <div className="flex gap-x-8 text-primary/60">
-                        <Button variant="ghost2" className="flex gap-2" onClick={onToggleLike}>
-                            {<ThumbsUpIcon />} <span>{comment.likes}</span>
+                        <Button variant="ghost2" className="flex gap-2" onClick={() => onToggleLiked(comment)}>
+                            {comment.owner.id === useCurrentUser()?.id && comment.isLiked ? (
+                                <ThumbsUpIcon className=" fill-current" />
+                            ) : (
+                                <ThumbsUpIcon />
+                            )}
+                            <span>{comment.likes}</span>
                         </Button>
                         <Button variant="link" className="">
                             reply

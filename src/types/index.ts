@@ -12,5 +12,6 @@ type TVideoComment = {
     videoId: string;
     owner: TOwner;
     createdAt: Date;
+    isLiked: boolean;
     likes: number;
 };
