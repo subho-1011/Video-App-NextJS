@@ -8,14 +8,15 @@ import { VideoClickButton } from "../video-click-button";
 
 interface ThumbnailCardProps {
     id: string;
+    slug: string;
     thumbnail: string;
     children?: React.ReactNode;
     disabled?: boolean;
 }
 
-export const ThumbnailCard = ({ id, thumbnail, disabled, children }: ThumbnailCardProps) => {
+export const ThumbnailCard = ({ id, slug, thumbnail, disabled, children }: ThumbnailCardProps) => {
     return (
-        <VideoClickButton videoId={id} disabled>
+        <VideoClickButton videoId={id} slug={slug}>
             <AspectRatio ratio={16 / 9} className="w-full relative">
                 <>
                     <Image

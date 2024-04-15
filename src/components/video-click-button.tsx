@@ -8,11 +8,13 @@ import { addVideoInHistoryAndViews } from "@/services/video.services";
 export const VideoClickButton = ({
     children,
     videoId,
+    slug,
     playlistId,
     disabled,
 }: {
     children: React.ReactNode;
     videoId: string;
+    slug: string;
     playlistId?: string;
     disabled?: boolean;
 }) => {
@@ -24,9 +26,9 @@ export const VideoClickButton = ({
         await addVideoInHistoryAndViews(videoId);
 
         if (playlistId) {
-            router.push(`/watch?v=${videoId}&list=${playlistId}`);
+            router.push(`/watch/${slug}?v=${videoId}&list=${playlistId}`);
         } else {
-            router.push(`/watch?v=${videoId}`);
+            router.push(`/watch/${slug}?v=${videoId}`);
         }
     };
 

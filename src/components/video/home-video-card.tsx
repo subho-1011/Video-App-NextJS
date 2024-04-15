@@ -14,6 +14,7 @@ interface Owner {
 interface VideoCardProps {
     id: string;
     title: string;
+    slug: string;
     thumbnail: string;
     views: number;
     duration: number;
@@ -21,10 +22,10 @@ interface VideoCardProps {
     owner: Owner;
 }
 
-export const VideoCard = ({ id, title, thumbnail, views, duration, createdAt, owner }: VideoCardProps) => {
+export const VideoCard = ({ id, title, slug, thumbnail, views, duration, createdAt, owner }: VideoCardProps) => {
     return (
         <Card className="space-y-3 border-0">
-            <ThumbnailCard {...{ id, thumbnail }}>
+            <ThumbnailCard {...{ id, slug, thumbnail }}>
                 <p className="flex rounded-lg right-3 bottom-3 px-1.5 bg-black/70 absolute">{duration}</p>
             </ThumbnailCard>
             <CardFooter className="flex items-start gap-4 px-3">

@@ -10,7 +10,7 @@ import { ThumbnailCard } from "./thumbnail-card";
 
 export const SideVideoCard = ({ video, listId }: { video: VideoWithOwner; listId?: string }) => {
     return (
-        <VideoClickButton videoId={video.id} playlistId={listId ?? undefined}>
+        <VideoClickButton videoId={video.id} slug={video.slug} playlistId={listId ?? undefined}>
             <div className="flex w-full gap-2">
                 <div className="flex w-1/2">
                     <AspectRatio ratio={16 / 9}>
