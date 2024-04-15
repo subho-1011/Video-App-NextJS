@@ -95,3 +95,14 @@ export const AddVideoSchema = z.object({
     }),
     isPublished: z.boolean().default(true),
 });
+
+export const PlaylistForm = z.object({
+    title: z.string().trim().min(1, {
+        message: "Title is required",
+    }),
+    description: z.string().min(1, {
+        message: "Description is required",
+    }),
+    videoUrls: z.optional(z.array(z.string())),
+    privacy: z.union([z.literal("private"), z.literal("public")]),
+});

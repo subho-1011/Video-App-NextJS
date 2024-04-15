@@ -24,6 +24,7 @@ model User {
   likes      Like[]
   comments   Comment[]
   communitys Community[]
+  playlists  Playlist[]
 
   @@map("users")
 }
@@ -158,4 +159,19 @@ model Subscription {
   createdAt             DateTime @default(now())
 
   @@map("subscriptions")
+}
+
+model Playlist {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String?
+  ownerId     String   @db.ObjectId
+  videosId    String[] @db.ObjectId
+  privacy     String   @default("private")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  owner  User    @relation(fields: [ownerId], references: [id])
+
+  @@map("playlists")
 }

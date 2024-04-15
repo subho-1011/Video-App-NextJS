@@ -1,7 +1,7 @@
-import React from "react";
+import Playlists from "@/components/playlists";
 
 const PlaylistsPage = () => {
-    return <div>PlaylistsPage</div>;
+    return <Playlists />;
 };
 
 export default PlaylistsPage;
