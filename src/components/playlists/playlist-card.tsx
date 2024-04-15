@@ -13,7 +13,7 @@ export const PlaylistCard = ({ playlist }: { playlist: TPlaylistWithVideos }) =>
     const time = timeInterval(playlist.createdAt.toString());
 
     return (
-        <PlaylistButton videosId={playlist.videosId} playlistId={playlist.id}>
+        <PlaylistButton videoId={playlist.videosId[0]} slug={playlist.videos[0]?.slug} playlistId={playlist.id}>
             <div className="flex flex-col space-y-2">
                 <div className=" relative w-full">
                     <div className="h-2 flex rounded-t-xl border border-b-0" />
