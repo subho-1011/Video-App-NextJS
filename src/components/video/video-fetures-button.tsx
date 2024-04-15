@@ -1,8 +1,13 @@
-import { DotsVerticalIcon } from "@radix-ui/react-icons";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
-import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { RiMenuAddFill } from "react-icons/ri";
-import { CreatePlaylistForm } from "../playlists/create-playlist-form";
+import { DotsVerticalIcon } from "@radix-ui/react-icons";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { AddVideoInPlaylistForm } from "@/components/playlists/add-video-in-playlist-form";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export const VideoFuturesButton = () => {
     return (
@@ -23,8 +28,8 @@ export const VideoFuturesButton = () => {
                                 <RiMenuAddFill />
                             </span>
                         </DialogTrigger>
-                        <DialogContent>
-                            <CreatePlaylistForm />
+                        <DialogContent className="w-fit py-10 px-8">
+                            <AddVideoInPlaylistForm />
                         </DialogContent>
                     </Dialog>
                 </DropdownMenuItem>
