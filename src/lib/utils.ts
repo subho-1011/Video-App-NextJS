@@ -14,7 +14,9 @@ export const slugTransform = (str: string) => {
         .replace(/\-\-+/g, "-");
 };
 
-export const timeInterval = (oldTimeString: string) => {
+export const timeInterval = (oldTimeString: Date | string) => {
+    oldTimeString = oldTimeString.toString();
+
     const oldTime = new Date(oldTimeString);
     const now = new Date();
 

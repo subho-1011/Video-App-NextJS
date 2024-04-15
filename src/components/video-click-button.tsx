@@ -1,15 +1,33 @@
 "use client";
 
-import { addVideoInHistoryAndViews } from "@/services/video.services";
-import { useRouter } from "next/navigation";
 import React from "react";
+import { useRouter } from "next/navigation";
 
-export const VideoClickButton = ({ children, videoId }: { children: React.ReactNode; videoId: string }) => {
+import { addVideoInHistoryAndViews } from "@/services/video.services";
+
+export const VideoClickButton = ({
+    children,
+    videoId,
+    playlistId,
+    disabled,
+}: {
+    children: React.ReactNode;
+    videoId: string;
+    playlistId?: string;
+    disabled?: boolean;
+}) => {
     const router = useRouter();
 
     const onClick = async () => {
-        router.push(`/watch?v=${videoId}`);
+        if (disabled) return;
+
         await addVideoInHistoryAndViews(videoId);
+
+        if (playlistId) {
+            router.push(`/watch?v=${videoId}&list=${playlistId}`);
+        } else {
+            router.push(`/watch?v=${videoId}`);
+        }
     };
 
     return (
