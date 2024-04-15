@@ -13,7 +13,7 @@ export const VideoShareButton = () => {
 
     const currentUrl = window.location.href;
     const onClick = () => {
-        ulrRef?.current?.select();
+        // ulrRef?.current?.select();
         document.execCommand("copy");
     };
 

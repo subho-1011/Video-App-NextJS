@@ -15,7 +15,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { videoI
         return NextResponse.json({ error: "Couldn't find video" }, { status: 404 });
     }
 
-    if (existingVideo.owner !== owner) {
+    if (existingVideo.ownerId !== owner) {
         return NextResponse.json({ error: "You are not the owner of this video" }, { status: 403 });
     }
 
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest, { params }: { params: { videoId:
     }
 
     const likes = await getLikesByVideoId(video.id);
-    const isLiked = !!(await isVideoLikedByUser(currentUser, video.id));
+    const isLiked = !!(await isVideoLikedByUser(currentUser!, video.id));
     const subscribers = await getTotalSubscribers(video.owner.id);
     const isSubscribed = await isSubscribedByUser(video.owner.id, currentUser);
 

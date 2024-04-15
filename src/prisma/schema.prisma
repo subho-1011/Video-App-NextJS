@@ -15,6 +15,7 @@ model User {
   emailVerified DateTime? @map("email_verified")
   image         String?
   password      String?
+  watchHistory  String[]
   createAt      DateTime? @default(now())
 
   accounts   Account[]
@@ -23,6 +24,7 @@ model User {
   likes      Like[]
   comments   Comment[]
   communitys Community[]
+  playlists  Playlist[]
 
   @@map("users")
 }
@@ -89,8 +91,8 @@ model Video {
   views       Int?
   duration    Float?
   isPublished Boolean  @default(true)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   likes    Like[]
   comments Comment[]
@@ -106,7 +108,7 @@ model Like {
   videoId     String?  @db.ObjectId
   commentId   String?  @db.ObjectId
   communityId String?  @db.ObjectId
-  createdAt    DateTime @default(now())
+  createdAt   DateTime @default(now())
 
   owner     User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   video     Video?     @relation(fields: [videoId], references: [id], onDelete: Cascade)
@@ -118,11 +120,13 @@ model Like {
 
 model Comment {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  text        String  
   ownerId     String   @db.ObjectId
   videoId     String?  @db.ObjectId
   commentId   String?  @db.ObjectId
   communityId String?  @db.ObjectId
-  createdAt    DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime? @default(now())
 
   like Like[]
 
@@ -134,10 +138,10 @@ model Comment {
 }
 
 model Community {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId  String   @db.ObjectId
-  text     String?  @db.ObjectId
-  imageUrl String?
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId   String   @db.ObjectId
+  text      String?  @db.ObjectId
+  imageUrl  String?
   createdAt DateTime @default(now())
 
   like    Like[]
@@ -152,7 +156,22 @@ model Subscription {
   id                    String   @id @default(auto()) @map("_id") @db.ObjectId
   subscriberId          String?  @db.ObjectId
   channelToSubscribedId String?  @db.ObjectId
-  createdAt              DateTime @default(now())
+  createdAt             DateTime @default(now())
 
   @@map("subscriptions")
+}
+
+model Playlist {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String?
+  ownerId     String   @db.ObjectId
+  videosId    String[] @db.ObjectId
+  privacy     String   @default("private")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  owner  User    @relation(fields: [ownerId], references: [id])
+
+  @@map("playlists")
 }

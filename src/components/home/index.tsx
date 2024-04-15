@@ -6,6 +6,7 @@ import { VideoCard } from "@/components/video/home-video-card";
 
 import { getAllVideos } from "@/services/video.services";
 import { IVideoCard } from "@/lib/types";
+import { SkeletonPage } from "../home-skeleton-page";
 
 const HomePage = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -35,7 +36,7 @@ const HomePage = () => {
     return (
         <>
             {isLoading ? (
-                "Loading..."
+                <SkeletonPage />
             ) : (
                 <div className="flex min-h-screen flex-col">
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-4 md:gap-y-6">

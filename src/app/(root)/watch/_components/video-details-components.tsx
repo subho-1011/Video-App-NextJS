@@ -63,14 +63,18 @@ export const DetailsComponent = ({ videoId }: { videoId: string }) => {
         setVideo({ ...video, isSubscribed: res.isSubscribed, subscribers: res.subscribers });
     };
 
+    const isOwner = video.owner.id === user?.id ? true : false;
+    console.log(`isOwner: ${isOwner}`);
+
     return (
         <div className="flex flex-col space-y-3 px-2">
             <VideoTitle title={video.title} />
             <ButtonsContainer
                 id={video.id}
                 name={video.owner.name}
+                isOwner={isOwner}
                 avatar={video.owner.image}
-                ownerId={video.owner.id}
+                username={video.owner.username}
                 isLiked={video.isLiked}
                 likes={video.likes}
                 isSubscribed={video.isSubscribed}
@@ -99,8 +103,9 @@ const VideoTitle = ({ title }: { title: string }) => {
 const ButtonsContainer = ({
     id,
     name,
+    isOwner,
     avatar,
-    ownerId,
+    username,
     isLiked,
     likes,
     isSubscribed,
@@ -110,8 +115,9 @@ const ButtonsContainer = ({
 }: {
     id: string;
     name: string;
+    isOwner: boolean;
     avatar: string;
-    ownerId: string;
+    username: string;
     isLiked: boolean;
     likes: number;
     isSubscribed: boolean;
@@ -122,8 +128,8 @@ const ButtonsContainer = ({
     return (
         <div className="flex flex-col-reverse md:flex-row gap-x-2 gap-y-4 justify-between">
             <div className="flex gap-x-4 items-center">
-                <OwnerAvatarButton ownerId={ownerId} name={name} avatar={avatar} />
-                <DashboardButton userId={ownerId}>
+                <OwnerAvatarButton username={username} name={name} avatar={avatar} />
+                <DashboardButton userId={username}>
                     <div className="flex flex-col justify-center">
                         <h1 className="font-normal">{name}</h1>
                         <p className="text-muted-foreground text-sm">{subscribers} subscribers</p>
@@ -135,7 +141,12 @@ const ButtonsContainer = ({
                 />
             </div>
             <div className="flex gap-x-10 items-center justify-end">
-                <VideoLikeButton isLiked={isLiked} likes={likes} onToggleLikeButton={onToggleLikeButton} />
+                <VideoLikeButton
+                    isLiked={isLiked}
+                    likes={likes}
+                    onToggleLikeButton={onToggleLikeButton}
+                    isOwner={isOwner}
+                />
                 <VideoShareButton />
             </div>
         </div>

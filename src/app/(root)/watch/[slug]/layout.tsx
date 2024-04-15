@@ -5,6 +5,7 @@ export default function WatchLayout({
     children,
     videoplayer,
     videodetails,
+    playlist,
     sidevideos,
     comments,
 }: {
@@ -12,6 +13,7 @@ export default function WatchLayout({
     videoplayer: React.ReactNode;
     videodetails: React.ReactNode;
     comments: React.ReactNode;
+    playlist?: React.ReactNode;
     sidevideos: React.ReactNode;
 }) {
     return (
@@ -22,7 +24,10 @@ export default function WatchLayout({
                     {videodetails}
                     {comments}
                 </div>
-                {sidevideos}
+                <div className="space-y-6">
+                    {playlist}
+                    {sidevideos}
+                </div>
             </div>
             {children}
         </>

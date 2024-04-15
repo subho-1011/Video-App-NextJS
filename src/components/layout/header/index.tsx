@@ -3,7 +3,7 @@
 import { ModeToggle } from "@/components/mode-toggle";
 import { SearchBar } from "@/components/layout/header/search-bar";
 import { UserButton } from "@/components/layout/header/user-button";
-import { AddVideoButton } from "@/components/add-video-button";
+import { AddVideoButton } from "@/components/video/add-video-button";
 
 const Header = () => {
     return (

@@ -19,8 +19,10 @@ import {
 import { LogoutButton } from "@/components/auth/logout-button";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
+import { useCurrentUser } from "@/hooks/user";
 
 const Sider = () => {
+    const user = !!useCurrentUser();
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState<boolean>(true);
 
@@ -31,8 +33,7 @@ const Sider = () => {
 
             setIsOpen(true);
 
-            if (pathname.startsWith("/watch") || pathname.startsWith("/auth"))
-                setIsOpen(false);
+            if (pathname.startsWith("/watch") || pathname.startsWith("/auth")) setIsOpen(false);
         });
     }, [pathname]);
 
@@ -135,7 +136,7 @@ const Sider = () => {
                         </Button>
                     </Link>
                 </nav>
-                <Button variant="ghost" className="w-full">
+                <Button variant="ghost" className="w-full" disabled={!user}>
                     <div className="flex w-full">
                         <LogoutButton>
                             <span className="flex gap-2 font-normal items-center">

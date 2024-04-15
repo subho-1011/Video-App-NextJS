@@ -7,7 +7,7 @@ export const DashboardButton = ({ children, userId }: { children: React.ReactNod
     const router = useRouter();
 
     const onClick = () => {
-        router.push(`/dashboard?u=${userId}`);
+        router.push(`/@${userId}`);
     };
 
     return (
