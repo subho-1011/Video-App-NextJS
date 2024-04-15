@@ -60,14 +60,12 @@ export const CreatePlaylistForm = () => {
             return;
         }
 
-        if (res.success) {
-            setUrls([]);
-            setUrl("");
-            form.reset();
-        }
+        setUrls([]);
+        setUrl("");
+        form.reset();
     };
 
-    const onAddUrl = (e: any) => {
+    const onAddUrl = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
         if (!url) return;
@@ -76,7 +74,7 @@ export const CreatePlaylistForm = () => {
         setUrl("");
     };
 
-    const onDeleteUrl = (e: any, index: number) => {
+    const onDeleteUrl = (e: React.MouseEvent<HTMLButtonElement>, index: number) => {
         e.preventDefault();
 
         setUrls(urls.filter((_, i) => i !== index));
