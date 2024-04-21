@@ -9,6 +9,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 import Header from "@/components/layout/header";
 import Sider from "@/components/layout/sider";
+import FloatButton from "@/components/float-button";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,7 +31,10 @@ export default function RootLayout({
                         <Header />
                         <div className="w-full flex flex-1 justify-between">
                             <Sider />
-                            <main className="w-full py-4 px-2 sm:p-8">{children}</main>
+                            <main className="w-full py-4 px-2 sm:p-8">
+                                {children}
+                                <FloatButton />
+                            </main>
                         </div>
                     </ThemeProvider>
                 </body>
