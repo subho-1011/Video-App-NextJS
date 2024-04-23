@@ -140,14 +140,15 @@ model Comment {
 model Community {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   ownerId   String   @db.ObjectId
-  text      String?  @db.ObjectId
+  text      String?  
   imageUrl  String?
   createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) 
 
-  like    Like[]
-  Comment Comment[]
+  likes    Like[]
+  comments Comment[]
 
-  owner User @relation(fields: [ownerId], references: [id])
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
   @@map("communitys")
 }
