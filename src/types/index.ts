@@ -1,5 +1,12 @@
 import { User, Comment, Community, Like } from "@prisma/client";
 
+// For Dashboard Types and Interfaces
+export type TChannel = Omit<User, "password" | "emailVerified" | "watchHistory"> & {
+    subscribers: number;
+    isSubscribed: boolean;
+    videos: number;
+};
+
 
 // For Community Types and Interfaces 
 export type TCommunityComment = Omit<Comment, "videoId" | "commentId"> & {};
