@@ -58,11 +58,11 @@ const Sider = () => {
                     </Link>
                 </nav>
                 <nav className="w-full">
-                    <Link href="/dashboard">
-                        <Button variant={pathname === "/dashboard" ? "navActive" : "ghost"} className="w-full">
+                    <Link href="/community">
+                        <Button variant={pathname === "/community" ? "navActive" : "ghost"} className="w-full">
                             <div className="flex w-full gap-2 font-normal left-0 items-center">
-                                <DashboardIcon className="h-4 w-4" />
-                                {isOpen && "Dashboard"}
+                                <Users2Icon className="h-4 w-4" />
+                                {isOpen && "Community"}
                             </div>
                             <div className="w-full"></div>
                         </Button>
@@ -114,16 +114,17 @@ const Sider = () => {
                     </Link>
                 </nav>
                 <nav className="w-full">
-                    <Link href="/community">
-                        <Button variant={pathname === "/community" ? "navActive" : "ghost"} className="w-full">
+                    <Link href="/dashboard">
+                        <Button variant={pathname === "/dashboard" ? "navActive" : "ghost"} className="w-full">
                             <div className="flex w-full gap-2 font-normal left-0 items-center">
-                                <Users2Icon className="h-4 w-4" />
-                                {isOpen && "Community"}
+                                <DashboardIcon className="h-4 w-4" />
+                                {isOpen && "Dashboard"}
                             </div>
                             <div className="w-full"></div>
                         </Button>
                     </Link>
                 </nav>
+
                 <Separator />
                 <nav className="w-full">
                     <Link href="/profile">
