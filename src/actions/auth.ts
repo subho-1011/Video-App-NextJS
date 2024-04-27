@@ -7,6 +7,34 @@ import { DEFAULT_LOGIN_REDIRECT } from "@/route";
 
 import { signIn, signOut } from "@/auth";
 import { AuthError } from "next-auth";
+import { currentUserId } from "@/lib/auth";
+import { db } from "@/lib/db";
+
+export const getMe = async () => {
+    try {
+        const id = await currentUserId();
+        if (!id) {
+            return { error: "User not found" };
+        }
+
+        const data = await db.user.findUnique({
+            where: { id },
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                image: true,
+                username: true,
+                watchHistory: true,
+                createAt: true,
+            },
+        });
+
+        return { data };
+    } catch (error) {
+        return { error: "User not found" };
+    }
+};
 
 export const login = async (data: z.infer<typeof LoginFormSchema>, callbackUrl?: string | undefined) => {
     const validateData = LoginFormSchema.safeParse(data);

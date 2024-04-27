@@ -35,4 +35,4 @@ export type TLike = Like & {};
 
 export type TOwner = Omit<TUser, "email" | "emailVerified" | "watchHistory" | "createAt"> & {};
 
-export type TUser = Omit<User, "password"> & {};
+export type TUser = Omit<User, "password" | "emailVerified"> & {};
