@@ -31,8 +31,15 @@ export type TVideo = Video & {
     comments: TVideoComment[];
 };
 
+export type TVideoCard = Omit<TVideo, "likes" | "comments"> & {};
+
 export type TLike = Like & {};
 
-export type TOwner = Omit<TUser, "email" | "emailVerified" | "watchHistory" | "createAt"> & {};
+export type TOwner = {
+    id: string;
+    name: string;
+    username: string;
+    image: string;
+};
 
 export type TUser = Omit<User, "password" | "emailVerified"> & {};

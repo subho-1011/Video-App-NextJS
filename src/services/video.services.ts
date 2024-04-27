@@ -1,6 +1,7 @@
+import { TVideoCard } from "@/types";
 import axios from "axios";
 
-import { IVideoCard } from "@/lib/types";
+// import { IVideoCard } from "@/lib/types";
 
 export const addVideoInHistoryAndViews = async (videoId: string) => {
     try {
@@ -63,7 +64,7 @@ export const videoData = async (videoId: string) => {
     }
 };
 
-export const getAllVideos = async (): Promise<{ data?: IVideoCard[]; error?: string; success?: string }> => {
+export const getAllVideos = async (): Promise<{ data?: TVideoCard[]; error?: string; success?: string }> => {
     try {
         const videos = await axios.get(`/api/videos`);
 

@@ -1,11 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterSlice from "./features/counterSlice";
 import userSlice from "./features/user-slice";
+import videosSlice from "./features/videos-slice";
 
 export const makeStore = () => {
     return configureStore({
         reducer: {
             User: userSlice,
+            Videos: videosSlice,
         },
     });
 };
