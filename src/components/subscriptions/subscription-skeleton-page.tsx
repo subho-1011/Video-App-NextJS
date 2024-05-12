@@ -1,19 +1,14 @@
 import React from "react";
-import { Card } from "../ui/card";
-import { Avatar } from "@radix-ui/react-avatar";
-import { Skeleton } from "../ui/skeleton";
-import { Badge } from "lucide-react";
-import { Separator } from "../ui/separator";
+import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const SubscriptionSkeletonPage = () => {
     return (
         <div className="flex min-h-screen flex-col">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-6">
-                <SubscriptionSkeletonCard />
-                <SubscriptionSkeletonCard />
-                <SubscriptionSkeletonCard />
-                <SubscriptionSkeletonCard />
-                <SubscriptionSkeletonCard />
+                {Array.from({ length: 6 }).map((_, index) => (
+                    <SubscriptionSkeletonCard key={index} />
+                ))}
             </div>
         </div>
     );

@@ -32,9 +32,13 @@ const userSlice = createSlice({
         logoutUser: (state) => {
             state.user = undefined;
         },
+
+        updateUser: (state, action: PayloadAction<TUser>) => {
+            state.user = action.payload;
+        },
     },
 });
 
-export const { initialize, setUser } = userSlice.actions;
+export const { initialize, setUser, updateUser } = userSlice.actions;
 
 export default userSlice.reducer;

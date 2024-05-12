@@ -1,70 +1,69 @@
-import { createCommentByVideoId, getCommnetsByVideoId } from "@/data/comment";
-import { currentUserId } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { currentUserId } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
+import { createCommentByVideoId, getCommnetsByVideoId } from "@/data/comment";
 
 export async function GET(request: NextRequest, { params }: { params: { videoId: string } }) {
     const userId = await currentUserId();
 
-    const videoId = params.videoId;
-
-    if (!videoId) {
-        return NextResponse.json({ error: "Please provide a videoId" }, { status: 404 });
-    }
+    const { videoId } = params;
+    const { searchParams } = request.nextUrl;
+    const limit = searchParams.get("limit");
+    const offset = searchParams.get("offset");
 
     const comments = await db.comment.findMany({
         where: { videoId },
         select: {
             id: true,
-            videoId: true,
-            ownerId: true,
             text: true,
             createdAt: true,
             owner: {
-                select: {
-                    id: true,
-                    name: true,
-                    username: true,
-                    email: true,
-                    image: true,
-                },
+                select: { id: true, name: true, image: true, username: true },
             },
-            like: {
+            likes: {
+                select: { id: true, ownerId: true },
+            },
+            replys: {
                 select: {
                     id: true,
-                    ownerId: true,
+                    text: true,
+                    createdAt: true,
+                    owner: {
+                        select: { id: true, name: true, image: true, username: true },
+                    },
+                    likes: {
+                        select: { id: true, ownerId: true },
+                    },
                 },
             },
         },
         orderBy: { createdAt: "desc" },
+        // take: limit ? Number(limit) : 10,
+        // skip: offset ? Number(offset) : 0,
     });
 
-    const commentsWithTotalLikes = comments.map((comment) => {
-        const likes = comment.like.length;
-
-        let isLiked = false;
-        comment.like.forEach((like) => {
-            if (like.ownerId === userId) {
-                return (isLiked = true);
-            }
-        });
+    const commentsWithLikes = comments.map((comment) => {
+        const isLiked = comment.likes.some((like) => like.ownerId === userId);
 
         return {
             ...comment,
+            likes: comment.likes.length,
             isLiked,
-            likes,
+            replys: comment.replys.map((reply) => {
+                const isLiked = reply.likes.some((like) => like.ownerId === userId);
+
+                return {
+                    ...reply,
+                    likes: reply.likes.length,
+                    isLiked,
+                };
+            }),
         };
     });
 
-    return NextResponse.json(
-        {
-            success: "All comments fetch successfully",
-            data: {
-                comments: commentsWithTotalLikes,
-            },
-        },
-        { status: 200 }
-    );
+    return NextResponse.json({
+        data: commentsWithLikes,
+    });
 }
 
 export async function POST(request: NextRequest, { params }: { params: { videoId: string } }) {

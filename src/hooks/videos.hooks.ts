@@ -2,7 +2,38 @@
 
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/utils";
-import { fetchAllVideos } from "@/store/asyncThunkApi/videos";
+import { fetchAllVideos, fetchAVideoData } from "@/store/asyncThunkApi/videos.asyncthunkApi";
+import { useSearchParams } from "next/navigation";
+import { useCurrentUser } from "./user";
+import { clearVideoData } from "@/store/features/videodata-slice";
+
+export const useGetAVideoData = () => {
+    const serachParams = useSearchParams();
+    const dispatch = useAppDispatch();
+    const currUser = useCurrentUser();
+
+    const videoId = serachParams.get("v");
+
+    const isLoading = useAppSelector((state) => state.VideoData.loading);
+    const error = useAppSelector((state) => state.VideoData.error);
+    const video = useAppSelector((state) => state.VideoData.video);
+
+    useEffect(() => {
+        return () => {
+            dispatch(clearVideoData());
+        };
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (videoId) {
+            dispatch(fetchAVideoData(videoId));
+        }
+    }, [dispatch, videoId]);
+
+    const isLiked = video ? video.likes.some((like) => like.ownerId === currUser?.id) : false;
+
+    return { isLoading, error, video, isLiked };
+};
 
 export const useGetVideos = () => {
     const dispatch = useAppDispatch();

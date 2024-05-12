@@ -13,7 +13,7 @@ export const AvatarCard = ({ image, name, username }: { image: string; name: str
 
             <div className="flex flex-col">
                 <h1>{name}</h1>
-                {username && <p className="text-primary/60">@username</p>}
+                {username && <p className="text-primary/60">@{username}</p>}
             </div>
         </div>
     );

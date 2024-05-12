@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TVideoCard } from "@/types";
-import { fetchAllVideos } from "../asyncThunkApi/videos";
+import { fetchAllVideos } from "../asyncThunkApi/videos.asyncthunkApi";
 
 type TVideosState = {
     videos: TVideoCard[];

@@ -1,4 +1,4 @@
-import { User, Comment, Community, Like, Video } from "@prisma/client";
+import { User, Comment, Community, Like, Video, Subscription } from "@prisma/client";
 
 // For Dashboard Types and Interfaces
 export type TChannel = Omit<User, "password" | "emailVerified" | "watchHistory"> & {
@@ -21,14 +21,28 @@ export type TCommunityDetails = Community & {
 //
 
 // For Video Types and Interfaces
-export type TVideoLike = Omit<Like, "communityId" | "commentId">;
+export type TVideoLike = {
+    id: string;
+    ownerId: string;
+};
 
-export type TVideoComment = Omit<Comment, "communityId" | "commentId"> & TOwner & {};
+export type TComment = {
+    id: string;
+    text: string;
+    createdAt: Date;
+    owner: TOwner;
+    likes: number;
+    isLiked: boolean;
+    replys: TComment[];
+};
 
 export type TVideo = Video & {
-    owner: TOwner;
+    owner: TOwner & {
+        subscribers: number;
+        isSubscribed: boolean;
+    };
     likes: TVideoLike[];
-    comments: TVideoComment[];
+    comments: TComment[];
 };
 
 export type TVideoCard = Omit<TVideo, "likes" | "comments"> & {};
@@ -41,5 +55,9 @@ export type TOwner = {
     username: string;
     image: string;
 };
+
+// export type TComment = Comment & {
+//     owner: TOwner;
+// };
 
 export type TUser = Omit<User, "password" | "emailVerified"> & {};

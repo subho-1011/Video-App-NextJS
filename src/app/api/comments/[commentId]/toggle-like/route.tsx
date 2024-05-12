@@ -1,7 +1,6 @@
 import { db } from "@/lib/db";
 
 import { currentUserId } from "@/lib/auth";
-
 import { NextRequest, NextResponse } from "next/server";
 import { countCommentLikes, deleteLikeById } from "@/data/like";
 
@@ -22,11 +21,23 @@ export async function POST(request: NextRequest, { params }: { params: { comment
         await deleteLikeById(existingLiked.id);
         const likes = await countCommentLikes(commentId);
 
-        return NextResponse.json({ isLiked: false, likes, success: "Successfully deleted like" }, { status: 200 });
+        return NextResponse.json(
+            {
+                data: { isLiked: false, commentId },
+                success: "Successfully deleted like",
+            },
+            { status: 200 }
+        );
     }
 
     await db.like.create({ data: { ownerId, commentId } });
     const likes = await countCommentLikes(commentId);
 
-    return NextResponse.json({ isLiked: true, likes, success: "Comment liked successfully" }, { status: 201 });
+    return NextResponse.json(
+        {
+            data: { isLiked: true, commentId },
+            success: "Comment liked successfully",
+        },
+        { status: 201 }
+    );
 }

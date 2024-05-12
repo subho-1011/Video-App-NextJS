@@ -1,7 +1,5 @@
-import { TVideoCard } from "@/types";
 import axios from "axios";
-
-// import { IVideoCard } from "@/lib/types";
+import { TVideoCard } from "@/types";
 
 export const addVideoInHistoryAndViews = async (videoId: string) => {
     try {
@@ -41,11 +39,9 @@ export const getLikedVideos = async () => {
 
 export const toggleLikedButton = async (videoId: string) => {
     try {
-        const res = await axios.post(`/api/videos/${videoId}/toggle-like`, { next: { tag: "likes" } });
+        const res = await axios.post(`/api/videos/${videoId}/toggle-like`);
 
-        console.log(res.data);
-
-        return res.data.data;
+        return res.data;
     } catch (error) {
         throw error;
     }
