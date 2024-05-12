@@ -28,7 +28,9 @@ const DashboardPage = () => {
         return null;
     }
 
-    const onToggleSubscriptionButton = async () => {};
+    const onToggleSubscriptionButton = async () => {
+        return null;
+    };
 
     return (
         <div className="space-y-8">

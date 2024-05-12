@@ -21,14 +21,9 @@ import { Button } from "@/components/ui/button";
 
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
-
-import { useSearchParams } from "next/navigation";
 import { login } from "@/actions/auth";
 
 export const LoginForm = () => {
-    const searchParams = useSearchParams();
-    const callbackUrl = searchParams.get("callbackUrl");
-
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
     const [isPending, startTransition] = useTransition();
@@ -46,7 +41,7 @@ export const LoginForm = () => {
         setSuccess("");
 
         startTransition(() => {
-            login(data, callbackUrl!).then((res) => {
+            login(data).then((res) => {
                 if (res.error) {
                     setError(res.error);
                 }

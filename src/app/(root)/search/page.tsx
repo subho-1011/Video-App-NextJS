@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { ThumbnailCard } from "@/components/video";
 import { timeInterval } from "@/lib/utils";
 import { TVideo } from "@/types";
+import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -18,9 +19,16 @@ const SearchPage = () => {
     useEffect(() => {
         if (!query) return;
 
-        searchAll(query).then((res) => {
-            if (res) setVideos(res);
-        });
+        const fetchVideos = async () => {
+            const res = await axios.get(`/api/search?q=${query}`);
+            setVideos(res.data.videos);
+        };
+
+        fetchVideos();
+
+        return () => {
+            setVideos([]);
+        };
     }, [query]);
 
     if (!query || !videos || videos.length === 0) {
@@ -44,11 +52,17 @@ const SearchVideoCard = (video: TVideo) => {
         <div className="w-full md:max-w-xl flex">
             <Card className="w-1/2">
                 {/* thumbnail */}
-                <ThumbnailCard id={video.id} slug={video.slug} thumbnail={video.thumbnail} />
+                <ThumbnailCard
+                    id={video.id}
+                    slug={video.slug}
+                    thumbnail={video.thumbnail}
+                />
             </Card>
             <div className="w-1/2">
                 <div className="flex flex-col justify-between h-full p-3">
-                    <h2 className="text-lg font-semibold line-clamp-2">{video.title}</h2>
+                    <h2 className="text-lg font-semibold line-clamp-2">
+                        {video.title}
+                    </h2>
                     <div className="flex justify-between items-center mt-3">
                         <div className="flex flex-col justify-start space-y-2">
                             <AvatarCard
@@ -56,7 +70,9 @@ const SearchVideoCard = (video: TVideo) => {
                                 name={video.owner.name!}
                                 username={video.owner.username!}
                             />
-                            <span className="text-sm text-gray-500">{timeInterval(video.createdAt)} ago</span>
+                            <span className="text-sm text-gray-500">
+                                {timeInterval(video.createdAt)} ago
+                            </span>
                         </div>
                     </div>
                 </div>
