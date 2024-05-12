@@ -5,17 +5,19 @@ import { useRouter } from "next/navigation";
 
 export const PlaylistButton = ({
     children,
-    videosId,
+    videoId,
+    slug,
     playlistId,
 }: {
     children: React.ReactNode;
-    videosId: string[];
+    videoId: string;
+    slug: string;
     playlistId: string;
 }) => {
     const router = useRouter();
 
     const onClick = () => {
-        router.push(`/watch?v=${videosId[0]}&list=${playlistId}`);
+        router.push(`/watch/${slug}?v=${videoId}&list=${playlistId}`);
     };
 
     return (

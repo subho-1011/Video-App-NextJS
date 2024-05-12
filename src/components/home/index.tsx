@@ -1,37 +1,14 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { VideoCard } from "@/components/video/home-video-card";
 
-import { getAllVideos } from "@/services/video.services";
-import { IVideoCard } from "@/lib/types";
 import { SkeletonPage } from "../home-skeleton-page";
+import { useGetVideos } from "@/hooks/videos.hooks";
 
 const HomePage = () => {
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-
-    const [error, setError] = useState<string | undefined>();
-    const [success, setSuccess] = useState<string | undefined>();
-
-    const [videos, setVideos] = useState<IVideoCard[]>();
-
-    useEffect(() => {
-        setIsLoading(true);
-
-        getAllVideos()
-            .then((res) => {
-                if (res.success) {
-                    setSuccess(res.success);
-                    setVideos(res.data);
-                }
-
-                if (res.error) {
-                    setError(res.error);
-                }
-            })
-            .finally(() => setIsLoading(false));
-    }, []);
+    const { isLoading, videos, error } = useGetVideos();
 
     return (
         <>

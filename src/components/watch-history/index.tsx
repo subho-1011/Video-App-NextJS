@@ -1,44 +1,14 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-
-import { VideoCard } from "@/components/video/home-video-card";
-
-import { getWatchHistory } from "@/services/video.services";
-import { IVideoCard } from "@/lib/types";
-import { SkeletonPage } from "../home-skeleton-page";
+import { useWatchHistory } from "@/hooks";
 import { useCurrentUser } from "@/hooks/user";
-import { Button } from "../ui/button";
-import NotLogin from "../not-login";
+import NotLogin from "@/components/not-login";
+import { VideoCard } from "@/components/video/home-video-card";
+import { SkeletonPage } from "@/components/home-skeleton-page";
 
 const WatchHistory = () => {
     const user = useCurrentUser();
-
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-
-    const [error, setError] = useState<string | undefined>();
-    const [success, setSuccess] = useState<string | undefined>();
-
-    const [videos, setVideos] = useState<IVideoCard[]>();
-
-    useEffect(() => {
-        setIsLoading(true);
-
-        getWatchHistory()
-            .then((res) => {
-                console.log(res.data);
-
-                if (res.success) {
-                    setSuccess(res.success);
-                    setVideos(res.data);
-                }
-
-                if (res.error) {
-                    setError(res.error);
-                }
-            })
-            .finally(() => setIsLoading(false));
-    }, []);
+    const { isLoading, error, videos } = useWatchHistory();
 
     if (!user) {
         return <NotLogin />;

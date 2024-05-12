@@ -18,13 +18,15 @@ model User {
   watchHistory  String[]
   createAt      DateTime? @default(now())
 
-  accounts   Account[]
-  sessions   Session[]
-  videos     Video[]
-  likes      Like[]
-  comments   Comment[]
-  communitys Community[]
-  playlists  Playlist[]
+  accounts    Account[]
+  sessions    Session[]
+  videos      Video[]
+  likes       Like[]
+  comments    Comment[]
+  // replys     Reply[]
+  communitys  Community[]
+  playlists   Playlist[]
+  subscribers Subscription[]
 
   @@map("users")
 }
@@ -88,7 +90,7 @@ model Video {
   tags        String[]
   thumbnail   String
   videoUrl    String
-  views       Int?
+  views       Int      @default(0)
   duration    Float?
   isPublished Boolean  @default(true)
   createdAt   DateTime @default(now())
@@ -113,23 +115,28 @@ model Like {
   owner     User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   video     Video?     @relation(fields: [videoId], references: [id], onDelete: Cascade)
   comment   Comment?   @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  // reply     Reply?     @relation(fields: [commentId], references: [id], onDelete: Cascade)
   community Community? @relation(fields: [communityId], references: [id], onDelete: Cascade)
 
   @@map("likes")
 }
 
 model Comment {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  text        String  
-  ownerId     String   @db.ObjectId
-  videoId     String?  @db.ObjectId
-  commentId   String?  @db.ObjectId
-  communityId String?  @db.ObjectId
-  createdAt   DateTime @default(now())
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  text        String
+  ownerId     String    @db.ObjectId
+  videoId     String?   @db.ObjectId
+  commentId   String?   @db.ObjectId 
+  communityId String?   @db.ObjectId
+  createdAt   DateTime  @default(now())
   updatedAt   DateTime? @default(now())
 
-  like Like[]
+  likes  Like[]
+  // replys Reply[]
+  replys Comment[] @relation("CommentToComment")
 
+
+  comment Comment? @relation("CommentToComment", fields: [commentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   owner     User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   video     Video?     @relation(fields: [videoId], references: [id], onDelete: Cascade)
   community Community? @relation(fields: [communityId], references: [id], onDelete: Cascade)
@@ -137,26 +144,45 @@ model Comment {
   @@map("comments")
 }
 
+// model Reply{
+//   id          String   @id @default(auto()) @map("_id") @db.ObjectId
+//   text        String
+//   ownerId     String   @db.ObjectId
+//   commentId   String   @db.ObjectId
+//   createdAt   DateTime @map("createdAt")
+//   updatedAt   DateTime @map("updatedAt")
+
+//   likes   Like[]
+
+//   owner   User    @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+//   comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+//   @@map("replys")
+// }
+
 model Community {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   ownerId   String   @db.ObjectId
-  text      String?  @db.ObjectId
+  text      String?
   imageUrl  String?
   createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 
-  like    Like[]
-  Comment Comment[]
+  likes    Like[]
+  comments Comment[]
 
-  owner User @relation(fields: [ownerId], references: [id])
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
   @@map("communitys")
 }
 
 model Subscription {
   id                    String   @id @default(auto()) @map("_id") @db.ObjectId
-  subscriberId          String?  @db.ObjectId
-  channelToSubscribedId String?  @db.ObjectId
+  subscriberId          String   @db.ObjectId
+  channelToSubscribedId String   @db.ObjectId
   createdAt             DateTime @default(now())
+
+  subscriber User @relation(fields: [channelToSubscribedId], references: [id], onDelete: Cascade)
 
   @@map("subscriptions")
 }
@@ -171,7 +197,7 @@ model Playlist {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
 
-  owner  User    @relation(fields: [ownerId], references: [id])
+  owner User @relation(fields: [ownerId], references: [id])
 
   @@map("playlists")
 }

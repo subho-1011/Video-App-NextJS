@@ -9,13 +9,11 @@ const Header = () => {
     return (
         <header className="w-full border-b p-3">
             <div className="w-full flex px-3 md:px-8 lg:px-16 items-center justify-between">
-                <h1 className=" text-2xl font-semibold tracking-wider">
-                    VideoApp
-                </h1>
-                <span className="hidden md:flex">
-                    <SearchBar />
-                </span>
+                <h1 className=" text-2xl font-semibold tracking-wider">VideoApp</h1>
                 <div className="flex mr-4 space-x-3 items-center justify-center">
+                    <span className="hidden md:flex">
+                        <SearchBar />
+                    </span>
                     <AddVideoButton />
                     <ModeToggle />
                     <UserButton />

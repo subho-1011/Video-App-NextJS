@@ -4,25 +4,9 @@ import { Card, CardFooter } from "@/components/ui/card";
 
 import { ThumbnailCard } from "./thumbnail-card";
 import { VideoCardFooter } from "./video-card-footer";
+import { TVideoCard } from "@/types";
 
-interface Owner {
-    id: string;
-    name: string;
-    username: string;
-    image: string;
-}
-interface VideoCardProps {
-    id: string;
-    title: string;
-    slug: string;
-    thumbnail: string;
-    views: number;
-    duration: number;
-    createdAt: Date;
-    owner: Owner;
-}
-
-export const VideoCard = ({ id, title, slug, thumbnail, views, duration, createdAt, owner }: VideoCardProps) => {
+export const VideoCard = ({ id, title, slug, thumbnail, views, duration, createdAt, owner }: TVideoCard) => {
     return (
         <Card className="space-y-3 border-0">
             <ThumbnailCard {...{ id, slug, thumbnail }}>

@@ -1,43 +1,16 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-import { VideoCard } from "@/components/video/home-video-card";
-
-import { getAllVideos, getLikedVideos } from "@/services/video.services";
-import { IVideoCard } from "@/lib/types";
-import { SkeletonPage } from "../home-skeleton-page";
+import NotLogin from "@/components/not-login";
 import { useCurrentUser } from "@/hooks/user";
-import NotLogin from "../not-login";
+import { VideoCard } from "@/components/video/home-video-card";
+import { SkeletonPage } from "@/components/home-skeleton-page";
+import { useLikedVideos } from "@/hooks";
 
 const LikedVideo = () => {
     const user = useCurrentUser();
-
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-
-    const [error, setError] = useState<string | undefined>();
-    const [success, setSuccess] = useState<string | undefined>();
-
-    const [videos, setVideos] = useState<IVideoCard[]>();
-
-    useEffect(() => {
-        setIsLoading(true);
-
-        getLikedVideos()
-            .then((res) => {
-                console.log(res.data);
-
-                if (res.success) {
-                    setSuccess(res.success);
-                    setVideos(res.data);
-                }
-
-                if (res.error) {
-                    setError(res.error);
-                }
-            })
-            .finally(() => setIsLoading(false));
-    }, []);
+    const { isLoading, error, videos } = useLikedVideos();
 
     if (!user) return <NotLogin />;
 
