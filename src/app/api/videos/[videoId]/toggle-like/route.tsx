@@ -1,7 +1,7 @@
-import { db } from "@/lib/db";
-``;
+import { getLikesAVideo, isVideoLikedByUser, toggleVideoLike } from "@/data/like";
 import { currentUserId } from "@/lib/auth";
 
+import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest, { params }: { params: { videoId: string } }) {
@@ -16,48 +16,23 @@ export async function POST(request: NextRequest, { params }: { params: { videoId
             return NextResponse.json({ error: "You are not logged in" }, { status: 404 });
         }
 
-        const isLiked = await db.like.findFirst({
-            where: {
-                ownerId: currUserId,
-                videoId,
-            },
-        });
+        const isLiked = await isVideoLikedByUser(currUserId, videoId);
 
-        if (isLiked) {
-            const deleteLike = await db.like.deleteMany({
-                where: {
-                    ownerId: currUserId,
-                    videoId,
-                },
-            });
-
-            return NextResponse.json(
-                {
-                    success: true,
-                    message: "Liked toggle successfully",
-                    data: {
-                        isLiked: false,
-                        like: isLiked,
-                    },
-                },
-                { status: 200 }
-            );
+        const liked = !isLiked;
+        const res = await toggleVideoLike(currUserId, videoId, liked);
+        if (!res) {
+            return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
         }
 
-        const newLike = await db.like.create({
-            data: {
-                ownerId: currUserId,
-                videoId,
-            },
-        });
+        const likes = await getLikesAVideo(videoId);
 
+        revalidateTag("likes");
         return NextResponse.json(
             {
-                success: true,
-                message: "Liked toggle successfully",
+                success: "Liked toggle successfully",
                 data: {
-                    isLiked: true,
-                    like: newLike,
+                    isLiked: liked,
+                    likes: likes,
                 },
             },
             { status: 200 }

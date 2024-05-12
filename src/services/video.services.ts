@@ -1,47 +1,14 @@
 import axios from "axios";
-import { TVideoCard } from "@/types";
 
-export const addVideoInHistoryAndViews = async (videoId: string) => {
-    try {
-        const res = await axios.patch(`/api/videos/watch-history?v=${videoId}`);
-
-        return res.data;
-    } catch (error: any) {
-        if (error.response) {
-            return error.response.data;
-        }
-    }
-};
-
-export const getWatchHistory = async () => {
-    try {
-        const videos = await axios.get(`/api/videos/watch-history`);
-
-        return videos.data;
-    } catch (error: any) {
-        if (error.response) {
-            return error.response.data;
-        }
-    }
-};
-
-export const getLikedVideos = async () => {
-    try {
-        const videos = await axios.get(`/api/videos/liked-videos`);
-
-        return videos.data;
-    } catch (error: any) {
-        if (error.response) {
-            return error.response.data;
-        }
-    }
-};
+import { IVideoCard } from "@/lib/types";
 
 export const toggleLikedButton = async (videoId: string) => {
     try {
-        const res = await axios.post(`/api/videos/${videoId}/toggle-like`);
+        const res = await axios.post(`/api/videos/${videoId}/toggle-like`, { next: { tag: "likes" } });
 
-        return res.data;
+        console.log(res.data);
+
+        return res.data.data;
     } catch (error) {
         throw error;
     }
@@ -60,7 +27,7 @@ export const videoData = async (videoId: string) => {
     }
 };
 
-export const getAllVideos = async (): Promise<{ data?: TVideoCard[]; error?: string; success?: string }> => {
+export const getAllVideos = async (): Promise<{ data?: IVideoCard[]; error?: string; success?: string }> => {
     try {
         const videos = await axios.get(`/api/videos`);
 
@@ -74,19 +41,9 @@ export const getAllVideos = async (): Promise<{ data?: TVideoCard[]; error?: str
     }
 };
 
-export const editVideo = async (formData: any, videoId: string) => {
-    try {
-        const res = await axios.post(`/api/videos/${videoId}/edit-video`, formData);
-
-        return res.data;
-    } catch (error: any) {
-        if (error.response) {
-            return error.response.data;
-        }
-    }
-};
-
 export const addVideo = async (formData: any) => {
+    console.log(formData);
+
     try {
         const res = await axios.post(`/api/videos/add-video`, formData);
 

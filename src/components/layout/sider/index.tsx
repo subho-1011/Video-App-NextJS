@@ -19,10 +19,8 @@ import {
 import { LogoutButton } from "@/components/auth/logout-button";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
-import { useCurrentUser } from "@/hooks/user";
 
 const Sider = () => {
-    const user = !!useCurrentUser();
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState<boolean>(true);
 
@@ -33,7 +31,8 @@ const Sider = () => {
 
             setIsOpen(true);
 
-            if (pathname.startsWith("/watch") || pathname.startsWith("/auth")) setIsOpen(false);
+            if (pathname.startsWith("/watch") || pathname.startsWith("/auth"))
+                setIsOpen(false);
         });
     }, [pathname]);
 
@@ -58,11 +57,11 @@ const Sider = () => {
                     </Link>
                 </nav>
                 <nav className="w-full">
-                    <Link href="/community">
-                        <Button variant={pathname === "/community" ? "navActive" : "ghost"} className="w-full">
+                    <Link href="/dashboard">
+                        <Button variant={pathname === "/dashboard" ? "navActive" : "ghost"} className="w-full">
                             <div className="flex w-full gap-2 font-normal left-0 items-center">
-                                <Users2Icon className="h-4 w-4" />
-                                {isOpen && "Community"}
+                                <DashboardIcon className="h-4 w-4" />
+                                {isOpen && "Dashboard"}
                             </div>
                             <div className="w-full"></div>
                         </Button>
@@ -114,17 +113,16 @@ const Sider = () => {
                     </Link>
                 </nav>
                 <nav className="w-full">
-                    <Link href="/dashboard">
-                        <Button variant={pathname === "/dashboard" ? "navActive" : "ghost"} className="w-full">
+                    <Link href="/community">
+                        <Button variant={pathname === "/community" ? "navActive" : "ghost"} className="w-full">
                             <div className="flex w-full gap-2 font-normal left-0 items-center">
-                                <DashboardIcon className="h-4 w-4" />
-                                {isOpen && "Dashboard"}
+                                <Users2Icon className="h-4 w-4" />
+                                {isOpen && "Community"}
                             </div>
                             <div className="w-full"></div>
                         </Button>
                     </Link>
                 </nav>
-
                 <Separator />
                 <nav className="w-full">
                     <Link href="/profile">
@@ -137,7 +135,7 @@ const Sider = () => {
                         </Button>
                     </Link>
                 </nav>
-                <Button variant="ghost" className="w-full" disabled={!user}>
+                <Button variant="ghost" className="w-full">
                     <div className="flex w-full">
                         <LogoutButton>
                             <span className="flex gap-2 font-normal items-center">

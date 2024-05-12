@@ -1,6 +1,9 @@
 import { db } from "@/lib/db";
 
 import { NextRequest, NextResponse } from "next/server";
+
+import { getLikesByVideoId, isVideoLikedByUser } from "@/data/like";
+import { getTotalSubscribers, isSubscribedByUser } from "@/data/subscription";
 import { currentUserId } from "@/lib/auth";
 
 export async function PATCH(request: NextRequest, { params }: { params: { videoId: string } }) {
@@ -12,7 +15,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { videoI
         return NextResponse.json({ error: "Couldn't find video" }, { status: 404 });
     }
 
-    if (existingVideo.ownerId !== owner) {
+    if (existingVideo.owner !== owner) {
         return NextResponse.json({ error: "You are not the owner of this video" }, { status: 403 });
     }
 
@@ -22,42 +25,22 @@ export async function PATCH(request: NextRequest, { params }: { params: { videoI
 }
 
 export async function GET(request: NextRequest, { params }: { params: { videoId: string } }) {
+    const currentUser = await currentUserId();
+
     const id = params.videoId;
     const video = await db.video.findUnique({
         where: { id },
-        include: {
-            owner: {
-                select: { id: true, name: true, username: true, image: true, subscribers: true },
-            },
-            likes: {
-                select: { id: true, ownerId: true },
-            },
-            comments: {
-                select: {
-                    id: true,
-                    text: true,
-                    createdAt: true,
-                    owner: {
-                        select: { id: true, name: true, username: true, image: true },
-                    },
-                    likes: {
-                        select: { id: true, ownerId: true },
-                    },
-                },
-            },
-        },
+        include: { owner: true },
     });
-
     if (!video) {
         return NextResponse.json({ error: "Couldn't find video" }, { status: 404 });
     }
 
-    const currUserId = await currentUserId();
+    const likes = await getLikesByVideoId(video.id);
+    const isLiked = !!(await isVideoLikedByUser(currentUser, video.id));
+    const subscribers = await getTotalSubscribers(video.owner.id);
+    const isSubscribed = await isSubscribedByUser(video.owner.id, currentUser);
 
-    // TODO: Add subscribers count and remove the subscribers array
-    const subscribers = video.owner.subscribers.length;
-    const isSubscribed = video.owner.subscribers.some((sub) => sub.subscriberId === currUserId);
-
-    const videoData = { ...video, owner: { ...video.owner, subscribers, isSubscribed } };
+    const videoData = { ...video, isLiked, isSubscribed, subscribers, likes };
     return NextResponse.json({ data: videoData, success: "Video data fetch successfully" }, { status: 200 });
 }

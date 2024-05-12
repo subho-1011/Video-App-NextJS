@@ -1,14 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-import { useDispatch, useSelector, useStore } from "react-redux";
-import type { TypedUseSelectorHook } from "react-redux";
-import type { RootState, AppDispatch, AppStore } from "@/store";
-
-export const useAppDispatch: () => AppDispatch = useDispatch;
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
-export const useAppStore: () => AppStore = useStore;
-
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
@@ -22,9 +14,7 @@ export const slugTransform = (str: string) => {
         .replace(/\-\-+/g, "-");
 };
 
-export const timeInterval = (oldTimeString: Date | string) => {
-    oldTimeString = oldTimeString.toString();
-
+export const timeInterval = (oldTimeString: string) => {
     const oldTime = new Date(oldTimeString);
     const now = new Date();
 

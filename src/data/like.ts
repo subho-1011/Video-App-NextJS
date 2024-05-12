@@ -2,18 +2,6 @@
 
 import { db } from "@/lib/db";
 
-export const countCommentLikes = async (commentId: string) => {
-    try {
-        const likes = await db.like.count({
-            where: { commentId },
-        });
-
-        return likes;
-    } catch {
-        return null;
-    }
-};
-
 export const createLike = async (ownerId: string, videoId: string) => {
     try {
         const like = db.like.create({
@@ -27,10 +15,6 @@ export const createLike = async (ownerId: string, videoId: string) => {
     } catch {
         return null;
     }
-};
-
-export const deleteLikeById = async (id: string) => {
-    await db.like.delete({ where: { id } });
 };
 
 export const deleteLike = async (ownerId: string, videoId: string) => {

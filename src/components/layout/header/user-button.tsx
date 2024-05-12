@@ -13,13 +13,12 @@ import {
 import { LogoutButton } from "@/components/auth/logout-button";
 
 import { LoginButton } from "@/components/auth/login-button";
-import { useAvatarFallback } from "@/hooks/user";
+import { useAvatarFallback, useCurrentUser } from "@/hooks/user";
 import { useRouter } from "next/navigation";
-import { useAppSelector } from "@/lib/utils";
 
 export const UserButton = () => {
     const router = useRouter();
-    const user = useAppSelector((state) => state.User.user);
+    const user = useCurrentUser();
 
     const fallback = useAvatarFallback();
 
@@ -29,7 +28,11 @@ export const UserButton = () => {
                 <Avatar>
                     <AvatarImage src={user?.image || ""} />
                     <AvatarFallback className="">
-                        {fallback ? fallback : <FaUser className=" text-white" />}
+                        {fallback ? (
+                            fallback
+                        ) : (
+                            <FaUser className=" text-white" />
+                        )}
                     </AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>
@@ -40,9 +43,15 @@ export const UserButton = () => {
                     </LoginButton>
                 ) : (
                     <>
-                        <DropdownMenuItem onClick={() => router.push("/profile")}>Profile</DropdownMenuItem>
+                        <DropdownMenuItem
+                            onClick={() => router.push("/profile")}
+                        >
+                            Profile
+                        </DropdownMenuItem>
                         <LogoutButton>
-                            <DropdownMenuItem className="cursor-pointer">Logout</DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer">
+                                Logout
+                            </DropdownMenuItem>
                         </LogoutButton>
                     </>
                 )}

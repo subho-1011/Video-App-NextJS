@@ -22,7 +22,7 @@ import { Button } from "@/components/ui/button";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { login } from "@/actions/auth";
 
 export const LoginForm = () => {
@@ -46,7 +46,7 @@ export const LoginForm = () => {
         setSuccess("");
 
         startTransition(() => {
-            login(data, callbackUrl!).then((res) => {
+            login(data, callbackUrl).then((res) => {
                 if (res.error) {
                     setError(res.error);
                 }

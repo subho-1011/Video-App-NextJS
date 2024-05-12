@@ -37,8 +37,8 @@ const HomePage = () => {
             {isLoading ? (
                 "Loading..."
             ) : (
-                <div className="flex min-h-screen flex-col">
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-4 md:gap-y-6">
+                <div className="flex w-full">
+                    <div className="flex flex-col w-full min-w-92">
                         {videos && videos.map((video) => <VideoCard key={video.id} {...video} />)}
                     </div>
                 </div>

@@ -1,15 +1,18 @@
 "use client";
 
-import { useAppSelector } from "@/lib/utils";
+import { useSession } from "next-auth/react";
 
 export const useCurrentUser = () => {
-    const user = useAppSelector((state) => state.User.user);
+    const session = useSession();
+    const user = session.data?.user;
 
     return user;
 };
 
 export const useAvatarFallback = () => {
-    const name = useAppSelector((state) => state.User.user?.name);
+    const session = useSession();
+
+    const name = session.data?.user?.name;
 
     return name
         ?.split(" ")
