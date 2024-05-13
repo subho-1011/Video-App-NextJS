@@ -1,53 +1,10 @@
-"use client";
-
-import { searchAll } from "@/actions/search";
-import { AvatarCard } from "@/components/avatar-card";
-import { Card } from "@/components/ui/card";
-import { ThumbnailCard } from "@/components/video";
 import { timeInterval } from "@/lib/utils";
+import { AvatarCard } from "../avatar-card";
+import { Card } from "../ui/card";
+import { ThumbnailCard } from "../video";
 import { TVideo } from "@/types";
-import axios from "axios";
-import { useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
 
-const SearchPage = () => {
-    const searchParams = useSearchParams();
-    const query = searchParams.get("q");
-
-    const [videos, setVideos] = useState<TVideo[]>([]);
-
-    useEffect(() => {
-        if (!query) return;
-
-        const fetchVideos = async () => {
-            const res = await axios.get(`/api/search?q=${query}`);
-            setVideos(res.data.videos);
-        };
-
-        fetchVideos();
-
-        return () => {
-            setVideos([]);
-        };
-    }, [query]);
-
-    if (!query || !videos || videos.length === 0) {
-        <div>
-            <div>Dont macth any thing</div>
-            go back to home
-        </div>;
-    }
-
-    return (
-        <div className="space-y-3">
-            {videos.map((video) => (
-                <SearchVideoCard key={video.id} {...video} />
-            ))}
-        </div>
-    );
-};
-
-const SearchVideoCard = (video: TVideo) => {
+export const SearchVideoCard = ({ video }: { video: TVideo }) => {
     return (
         <div className="w-full md:max-w-xl flex">
             <Card className="w-1/2">
@@ -80,5 +37,3 @@ const SearchVideoCard = (video: TVideo) => {
         </div>
     );
 };
-
-export default SearchPage;

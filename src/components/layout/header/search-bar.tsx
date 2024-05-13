@@ -49,7 +49,7 @@ export const SearchBar = () => {
     }, [search]);
 
     const onClick = () => {
-        router.push(`/search?q=${search}`);
+        router.push(`/search/${search}`);
 
         setVideos([]);
         reset();

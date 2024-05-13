@@ -10,7 +10,7 @@ import {
     DashboardVideos,
 } from "@/components/dashboard";
 
-const DashboardSubPages = () => {
+export const DashboardSubPages = () => {
     const [page, setPage] = useState<React.ReactNode>(<DashboardHome />);
 
     const items = ["home", "videos", "playlist", "community", "about"];
@@ -42,7 +42,11 @@ const DashboardSubPages = () => {
         <div>
             <div className="flex border-b-2 px-4 gap-x-4">
                 {items.map((item) => (
-                    <Button key={item} variant="ghost2" onClick={() => onClick(item)}>
+                    <Button
+                        key={item}
+                        variant="ghost2"
+                        onClick={() => onClick(item)}
+                    >
                         {item}
                     </Button>
                 ))}
@@ -51,5 +55,3 @@ const DashboardSubPages = () => {
         </div>
     );
 };
-
-export default DashboardSubPages;

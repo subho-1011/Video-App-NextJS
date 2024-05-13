@@ -1,12 +1,5 @@
 "use client";
 
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { RegisterFormShema } from "@/lib/schemas";
-
-import { useState, useTransition } from "react";
-
 import { CardWrapper } from "@/components/auth/auth-card-wrapper";
 import {
     Form,
@@ -22,40 +15,10 @@ import { Button } from "@/components/ui/button";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 
-import { register } from "@/services/auth.services";
-
+import { useUserRegisterForm } from "@/hooks/form/useRegisterForm";
 
 export const RegisterForm = () => {
-    const [error, setError] = useState<string>("");
-    const [success, setSuccess] = useState<string>("");
-    const [isPending, startTransition] = useTransition();
-
-    const form = useForm<z.infer<typeof RegisterFormShema>>({
-        resolver: zodResolver(RegisterFormShema),
-        defaultValues: {
-            name: "",
-            username: "",
-            email: "",
-            password: "",
-        },
-    });
-
-    const onSubmit = (data: z.infer<typeof RegisterFormShema>) => {
-        setError("");
-        setSuccess("");
-
-        startTransition(() => {
-            register(data).then((res) => {
-                if (res.error) {
-                    setError(res.error);
-                }
-
-                if (res.success) {
-                    setSuccess(res.success);
-                }
-            });
-        });
-    };
+    const { isLoading, form, error, success, onSubmit } = useUserRegisterForm();
 
     return (
         <CardWrapper
@@ -80,7 +43,7 @@ export const RegisterForm = () => {
                                         <Input
                                             {...field}
                                             placeholder="Mr chandra gupta"
-                                            disabled={isPending}
+                                            disabled={isLoading}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -97,7 +60,7 @@ export const RegisterForm = () => {
                                         <Input
                                             {...field}
                                             placeholder="gupta123"
-                                            disabled={isPending}
+                                            disabled={isLoading}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -115,7 +78,7 @@ export const RegisterForm = () => {
                                             {...field}
                                             placeholder="mr.chandragupta@gmail.com"
                                             type="email"
-                                            disabled={isPending}
+                                            disabled={isLoading}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -133,7 +96,7 @@ export const RegisterForm = () => {
                                             {...field}
                                             placeholder="********"
                                             type="password"
-                                            disabled={isPending}
+                                            disabled={isLoading}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -147,7 +110,7 @@ export const RegisterForm = () => {
                         className="w-full"
                         size="lg"
                         type="submit"
-                        disabled={isPending}
+                        disabled={isLoading}
                     >
                         Sign Up
                     </Button>

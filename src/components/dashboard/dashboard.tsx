@@ -9,6 +9,7 @@ import { getChannelInfo } from "@/services/dashboard.services";
 import { useCurrentUser } from "@/hooks/user";
 import { toggleSubscription } from "@/services/subscriptions.services";
 import { useRouter } from "next/navigation";
+import { DashboardSubPages } from "./dashboard-sub-page";
 
 type ChannelInfo = {
     id: string;
@@ -30,11 +31,14 @@ const Dashboard = ({ username }: { username?: string }) => {
         if (!username) return;
 
         getChannelInfo(username).then((res) => {
-            console.log(res);
             if (res.success) {
                 setChannel(res.data.channel);
             }
         });
+
+        return () => {
+            setChannel(undefined);
+        };
     }, [username]);
 
     if (!username) return null;
@@ -45,7 +49,9 @@ const Dashboard = ({ username }: { username?: string }) => {
             return;
         }
 
-        const { isSubscribed, subscribers } = await toggleSubscription(channel?.id!);
+        const { isSubscribed, subscribers } = await toggleSubscription(
+            channel?.id!
+        );
 
         setChannel({ ...channel!, isSubscribed, subscribers });
     };
@@ -55,9 +61,13 @@ const Dashboard = ({ username }: { username?: string }) => {
             <Card className="p-8">
                 <CardContent className="flex gap-10 items-center">
                     <AvatarLogo avatar={channel?.image} />
-                    <Informations channel={channel} onSubscribed={onToggleSubscriptionButton} />
+                    <Informations
+                        channel={channel}
+                        onSubscribed={onToggleSubscriptionButton}
+                    />
                 </CardContent>
             </Card>
+            <DashboardSubPages />
         </div>
     );
 };

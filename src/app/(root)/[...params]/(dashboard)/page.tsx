@@ -1,18 +1,23 @@
 "use client";
 
-import Dashboard from "@/components/dashboard/dashboard";
-import NotFound from "@/components/not-found";
-import { useParams } from "next/navigation";
 import React from "react";
+import { useParams } from "next/navigation";
+import { useAppSelector } from "@/lib/utils";
+import NotFound from "@/components/not-found";
+import Dashboard from "@/components/dashboard/dashboard";
 
 const DashboardPage = () => {
-    const params = useParams();
+    const { params } = useParams();
+    const { username } = useAppSelector((state) => state.User.user) || {};
 
-    if (params.params[0].startsWith("%40")) {
-        const username = params.params[0].replace(/%40/g, "");
-        console.log(username);
+    if (params[0].startsWith("%40")) {
+        const targetUsername = params[0].replace(/%40/g, "");
 
-        return <Dashboard username={username}/>;
+        if (targetUsername === "me" && username) {
+            return <Dashboard username={username} />;
+        }
+
+        return <Dashboard username={targetUsername} />;
     }
 
     return <NotFound />;
