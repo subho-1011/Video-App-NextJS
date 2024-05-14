@@ -24,7 +24,13 @@ export default function Page() {
     return (
         <>
             <div className="w-full h-full shadow-md border">
-                <ReactPlayer url={video?.videoUrl} height="100%" width="100%" playing controls />
+                <ReactPlayer
+                    url={video?.videoUrl}
+                    height="100%"
+                    width="100%"
+                    playing
+                    controls
+                />
             </div>
             <div className="flex items-center">
                 <h1 className="text-lg font-medium">{video.title}</h1>
@@ -32,10 +38,12 @@ export default function Page() {
             <div className="flex flex-col-reverse md:flex-row gap-x-2 gap-y-4 justify-between">
                 <div className="flex gap-x-4 items-center">
                     <OwnerAvatarButton {...video.owner} />
-                    <DashboardButton userId={video.owner.username}>
+                    <DashboardButton username={video.owner.username}>
                         <div className="flex flex-col justify-center">
                             <h1 className="font-normal">{video.owner.name}</h1>
-                            <p className="text-muted-foreground text-sm">{video.owner.subscribers} subscribers</p>
+                            <p className="text-muted-foreground text-sm">
+                                {video.owner.subscribers} subscribers
+                            </p>
                         </div>
                     </DashboardButton>
                     <VideoSubscriberButton
@@ -57,11 +65,17 @@ export default function Page() {
                 </div>
             </div>
             <Card className="flex flex-col space-y-2 bg-secondary p-4">
-                <h1 className="text-lg text-secondary-foreground">{video.title}</h1>
+                <h1 className="text-lg text-secondary-foreground">
+                    {video.title}
+                </h1>
                 <p className="flex text-muted-foreground">
-                    <span className="text-secondary-foreground">{video.views} views</span>
+                    <span className="text-secondary-foreground">
+                        {video.views} views
+                    </span>
                     <Dot />
-                    <span className="text-secondary-foreground">{timeInterval(video.createdAt)}</span>
+                    <span className="text-secondary-foreground">
+                        {timeInterval(video.createdAt)}
+                    </span>
                 </p>
                 <p className="text-muted-foreground">{video.description}</p>
             </Card>

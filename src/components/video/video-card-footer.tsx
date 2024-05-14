@@ -18,7 +18,13 @@ interface VideoTitleProps {
 
 interface VideoCardFooterProps extends VideoTitleProps {}
 
-export const VideoCardFooter = ({ id, title, views, owner, createdAt }: VideoCardFooterProps) => {
+export const VideoCardFooter = ({
+    id,
+    title,
+    views,
+    owner,
+    createdAt,
+}: VideoCardFooterProps) => {
     return (
         <>
             <UserDashboardButton {...owner} />
@@ -28,7 +34,13 @@ export const VideoCardFooter = ({ id, title, views, owner, createdAt }: VideoCar
     );
 };
 
-export const VideoTitle = ({ id, title, views, owner, createdAt }: VideoTitleProps) => {
+export const VideoTitle = ({
+    id,
+    title,
+    views,
+    owner,
+    createdAt,
+}: VideoTitleProps) => {
     const createdTimeInterval = timeInterval(createdAt.toString());
 
     return (
@@ -39,7 +51,9 @@ export const VideoTitle = ({ id, title, views, owner, createdAt }: VideoTitlePro
                 </VideoClickButton>
             </h1>
             <h1 className="text-muted-foreground">
-                <DashboardButton userId={owner.username}>@{owner.username}</DashboardButton>
+                <DashboardButton username={owner.username}>
+                    @{owner.username}
+                </DashboardButton>
             </h1>
             <p className="text-muted-foreground inline-flex">
                 <span>{views} views</span>

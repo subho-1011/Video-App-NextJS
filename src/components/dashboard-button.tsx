@@ -1,13 +1,19 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import React from "react";
+import { useRouter } from "next/navigation";
 
-export const DashboardButton = ({ children, userId }: { children: React.ReactNode; userId: string }) => {
+export const DashboardButton = ({
+    children,
+    username,
+}: {
+    children: React.ReactNode;
+    username: string;
+}) => {
     const router = useRouter();
 
     const onClick = () => {
-        router.push(`/@${userId}`);
+        router.push(`/@${username}`);
     };
 
     return (

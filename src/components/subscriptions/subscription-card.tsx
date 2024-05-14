@@ -28,7 +28,7 @@ export const SubscriptionCard = ({
     totalViews: number;
 }) => {
     return (
-        <DashboardButton userId={username}>
+        <DashboardButton username={username}>
             <Card>
                 <div className="flex p-4 justify-center items-center gap-3 h-fit py-12">
                     <Avatar className="h-16 w-16">
