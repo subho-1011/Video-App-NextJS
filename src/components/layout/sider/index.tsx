@@ -158,9 +158,7 @@ const Sider = () => {
                     <Link href="/@me">
                         <Button
                             variant={
-                                pathname === "/dashboard"
-                                    ? "navActive"
-                                    : "ghost"
+                                pathname === "/@me" ? "navActive" : "ghost"
                             }
                             className="w-full"
                         >
