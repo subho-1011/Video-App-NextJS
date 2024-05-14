@@ -1,70 +1,36 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Dot, User2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getChannelInfo } from "@/services/dashboard.services";
-import { useCurrentUser } from "@/hooks/user";
-import { toggleSubscription } from "@/services/subscriptions.services";
-import { useRouter } from "next/navigation";
 import { DashboardSubPages } from "./dashboard-sub-page";
+import { useAppDispatch, useAppSelector } from "@/lib/utils";
+import {
+    getChannelInfo,
+    toggleSubscription,
+} from "@/store/asyncThunkApi/dashboard.asyncthunkApi";
+import { resetChannel } from "@/store/features/dashboard-slice";
 
-type ChannelInfo = {
-    id: string;
-    name: string;
-    username: string;
-    image: string;
-    subscribers: number;
-    videos: number;
-    isSubscribed: boolean;
-};
-
-const Dashboard = ({ username }: { username?: string }) => {
-    const router = useRouter();
-    const user = useCurrentUser();
-
-    const [channel, setChannel] = useState<ChannelInfo>();
+const Dashboard = () => {
+    const dispatch = useAppDispatch();
+    const channelName = useAppSelector((state) => state.Dashboard.channelName);
 
     useEffect(() => {
-        if (!username) return;
-
-        getChannelInfo(username).then((res) => {
-            if (res.success) {
-                setChannel(res.data.channel);
-            }
-        });
-
         return () => {
-            setChannel(undefined);
+            dispatch(resetChannel());
         };
-    }, [username]);
+    }, [dispatch]);
 
-    if (!username) return null;
-
-    const onToggleSubscriptionButton = async () => {
-        if (!user) {
-            router.push("/auth/login");
-            return;
-        }
-
-        const { isSubscribed, subscribers } = await toggleSubscription(
-            channel?.id!
-        );
-
-        setChannel({ ...channel!, isSubscribed, subscribers });
-    };
+    if (!channelName) return null;
 
     return (
         <div className="space-y-8">
             <Card className="p-8">
                 <CardContent className="flex gap-10 items-center">
-                    <AvatarLogo avatar={channel?.image} />
-                    <Informations
-                        channel={channel}
-                        onSubscribed={onToggleSubscriptionButton}
-                    />
+                    <AvatarLogo />
+                    <ChannelInformations />
                 </CardContent>
             </Card>
             <DashboardSubPages />
@@ -72,10 +38,12 @@ const Dashboard = ({ username }: { username?: string }) => {
     );
 };
 
-const AvatarLogo = ({ avatar }: { avatar: string | undefined }) => {
+const AvatarLogo = () => {
+    const image = useAppSelector((state) => state.Dashboard.channel?.image);
+
     return (
         <Avatar className="h-36 w-36">
-            <AvatarImage src={avatar} />
+            <AvatarImage src={image} />
             <AvatarFallback>
                 <User2Icon />
             </AvatarFallback>
@@ -83,7 +51,19 @@ const AvatarLogo = ({ avatar }: { avatar: string | undefined }) => {
     );
 };
 
-const Informations = ({ channel, onSubscribed }: { channel?: ChannelInfo; onSubscribed: () => void }) => {
+const ChannelInformations = () => {
+    const dispatch = useAppDispatch();
+
+    const { channelName, channel, isSubscribed, videos } = useAppSelector(
+        (state) => state.Dashboard
+    );
+
+    useEffect(() => {
+        if (channelName) {
+            dispatch(getChannelInfo(channelName));
+        }
+    }, [dispatch, channelName]);
+
     return (
         <div className="flex flex-col gap-3 w-fit justify-center items-start">
             <h1 className="text-3xl">{channel?.name}</h1>
@@ -92,10 +72,14 @@ const Informations = ({ channel, onSubscribed }: { channel?: ChannelInfo; onSubs
                 <Dot />
                 <span>{channel?.subscribers} subscribers</span>
                 <Dot />
-                <span>{channel?.videos} videos</span>
+                <span>{videos.length} videos</span>
             </div>
-            <Button size="sm" className="flex rounded-full px-6" onClick={onSubscribed}>
-                {channel?.isSubscribed ? "subscribed" : "subscribe"}
+            <Button
+                size="sm"
+                className="flex rounded-full px-6"
+                onClick={() => dispatch(toggleSubscription(channel?.id || ""))}
+            >
+                {isSubscribed ? "subscribed" : "subscribe"}
             </Button>
         </div>
     );

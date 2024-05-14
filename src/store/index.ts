@@ -3,6 +3,7 @@ import userSlice from "./features/user-slice";
 import videosSlice from "./features/videos-slice";
 import videodataSlice from "./features/videodata-slice";
 import commentsSlice from "./features/comments-slice";
+import dashboardSlice from "./features/dashboard-slice";
 
 export const makeStore = () => {
     return configureStore({
@@ -11,6 +12,7 @@ export const makeStore = () => {
             Videos: videosSlice,
             VideoData: videodataSlice,
             Comments: commentsSlice,
+            Dashboard: dashboardSlice,
         },
     });
 };
