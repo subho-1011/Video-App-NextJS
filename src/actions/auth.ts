@@ -36,7 +36,10 @@ export const getMe = async () => {
     }
 };
 
-export const login = async (data: z.infer<typeof LoginFormSchema>, callbackUrl?: string | undefined) => {
+export const login = async (
+    data: z.infer<typeof LoginFormSchema>,
+    callbackUrl?: string | undefined | null
+) => {
     const validateData = LoginFormSchema.safeParse(data);
     if (!validateData.success) {
         return { error: "Validation failed" };

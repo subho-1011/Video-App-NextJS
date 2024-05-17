@@ -4,8 +4,10 @@ import { useForm } from "react-hook-form";
 import { RegisterFormShema } from "@/lib/schemas";
 import { register } from "@/services/auth.services";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 
 export const useUserRegisterForm = () => {
+    const router = useRouter();
     const [error, setError] = useState<string>("");
     const [success, setSuccess] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -35,6 +37,9 @@ export const useUserRegisterForm = () => {
             }
         });
         setIsLoading(false);
+
+        form.reset();
+        router.push("/auth/login");
     };
 
     return { form, error, success, isLoading, onSubmit };
